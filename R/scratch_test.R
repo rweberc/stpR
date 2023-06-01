@@ -14,7 +14,11 @@ library(usethis)
 # get_project_dictionary()
 #     default path would be at top-level of project, but could give another path
 
+# TODO: I have new_map and map_ob... referred to at various times... I should pick one...
 
+# TODO: consider having option for filter/ques cases to return metadata object... could include all the things
+# TODO: consider again how you could integrate in the summary-by type options... I think it could be really helpful to have that incorporated as something you're checking regularly
+#       could have a global option for whether those run by default or not...
 
 # write_stpr
 
@@ -54,13 +58,28 @@ library(usethis)
 #     3. for auto-compare, programmatic checks
 
 
-# THINGS YOU NEED IN YOUR PROJECT ENVIRONMENT
+# THINGS YOU NEED IN YOUR PROJECT FOLDER
 # 1. Dictionary yaml
 # 2. stpR object
 # 3. Comparare stpR object
 
 
+# TODO: inside a function, should you never use '<-'?
+# update stpr_ within package to stp_
+
+# consider having one eval_ function where you can specify the relevant parameters, all present... then having several others that are just wrappers for having certain defaults
+
 # TODO: add function to make sure stpr_ob, project_dictionary, and stpr_compare_ob are well-formed
+
+
+# stack difference results when there are more than two "to" columns ('changed per id - only in old', 'changed per id - only in new')
+# have a change_type column in the reference object that 'only in old', 'only in new' 'changed'
+# add another column in the update entity that would note what data set was compared against
+
+
+# TODO: update the main functions to have an option to modify what they return... (update fields, all fields, etc.)
+
+
 
 # "Metadata"
 #

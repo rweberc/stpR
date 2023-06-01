@@ -5,19 +5,19 @@
 \title{Description}
 \usage{
 eval_fields(
-  data_df,
+  data_df = NULL,
   from = NULL,
   to = NULL,
-  excl_std_process = NULL,
+  std_proc_na = NULL,
   highlight = FALSE,
   issue = FALSE,
-  summary_by = NULL,
-  id = NULL,
   notes = NULL,
+  stp_id = NULL,
   artifact = TRUE,
-  no_report = FALSE,
+  document = TRUE,
   compare = TRUE,
-  stpr_ob = NULL
+  stpr_project_dictionary = get_project_dictionary(stpr_project_dictionary),
+  stpr_compare_object = get_compare_object(stpr_compare_object, stpr_project_dictionary)
 )
 }
 \arguments{

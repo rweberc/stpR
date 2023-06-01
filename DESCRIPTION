@@ -16,3 +16,5 @@ LazyData: true
 Suggests: 
     testthat (>= 2.0.0)
 Config/testthat/edition: 2
+Imports: 
+    magrittr
