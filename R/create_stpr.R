@@ -49,8 +49,9 @@ create_stp_ob <- function() {
 
   text_items = tibble::tibble(
     type = character(), # comment, todo, alert # TODO: consier if "errors/alerts" should be in a separate data object...
-    id = character(),
+    stp_id = character(),
     item = character(),
+    add_item = list(),
     priority = character(), # NA for comments
     timestamp = POSIXct() # todo check type
   )

@@ -37,7 +37,7 @@ update_stp_mappings <- function(df_name,
 
   # check if stp_ob currently has a row for this id
   existing_rows = stp_ob$filter_items %>%
-    dplyr::filter(id == stp_id) %>%
+    dplyr::filter(stp_id == stp_id) %>%
     dplyr::nrow()
 
   # TODO: perhaps have function to do all things like checking for duplicates by id, etc.
@@ -53,7 +53,7 @@ update_stp_mappings <- function(df_name,
 
       # if overwrite allows, removed existing row before making update
       stp_ob$filter_items = stp_ob$filter_items %>%
-        dplyr::filter(id != stp_id)
+        dplyr::filter(stp_id != stp_id)
 
     }
   }

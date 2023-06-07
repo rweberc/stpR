@@ -296,21 +296,21 @@ eval_fields <- function(data_df = NULL,
 #   "c", 3, 3
 # )
 ## Looking at case with multiple values but only one 'to' column
-old_map <- tribble(
-  ~ id, ~ col1,
-  "a", 1,
-  "b", 9,
-  "b", 10,
-  "c", 3
-)
-
-new_map <- tribble(
-  ~ id, ~ col1,
-  "a", 1,
-  "b", 100,
-  "b", 200,
-  "c", 3
-)
+# old_map <- tribble(
+#   ~ id, ~ col1,
+#   "a", 1,
+#   "b", 9,
+#   "b", 10,
+#   "c", 3
+# )
+#
+# new_map <- tribble(
+#   ~ id, ~ col1,
+#   "a", 1,
+#   "b", 100,
+#   "b", 200,
+#   "c", 3
+# )
 #
 # from <-  "id"
 # to <- c("col1", "col2")
@@ -369,7 +369,7 @@ get_stp_object <- function(stp_project_dictionary, dir = here::here(), file_type
 # tibble(id = c(NA, 1, 2), col1 = c(0, 1, NA)) %>% anti_join(tibble(id = 1:3, col1 = c(0, 1, NA)), by = "id")
 
 # Similarly, when you have NA in the to columns (either in old or new)
-tibble(id = c(NA, 1, 2), col1 = c(0, 1, NA)) %>% anti_join(tibble(id = 1:3, col1 = c(0, 1, NA)), by = "id")
+# tibble(id = c(NA, 1, 2), col1 = c(0, 1, NA)) %>% anti_join(tibble(id = 1:3, col1 = c(0, 1, NA)), by = "id")
 
 
 
