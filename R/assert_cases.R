@@ -22,7 +22,7 @@ assert_cases <- function(logic,
     error_print <- paste0(eval_logic_assert_string, "' FAILED.")
 
     ### TODO: save mult
-    if (stp_project_dictionary$save_metadata_global) {
+    if (project_dictionary$save_metadata_global) {
 
       log_item(type = "ALERT",
                item = eval_logic_assert_string, # TODO: if statement is not a string but R code... will as.character() just give a "print" of it?
@@ -33,7 +33,7 @@ assert_cases <- function(logic,
                project_directory = project_directory)
     }
 
-    if (stp_project_dictionary$console_output_global) {
+    if (project_dictionary$console_output_global) {
       print(multDf)
     }
 

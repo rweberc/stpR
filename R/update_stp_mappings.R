@@ -4,15 +4,16 @@
 #' @export
 #'
 update_stp_mappings <- function(df_name,
-                                map_ob,
-                                map_diff,
+                                ref_ob,
+                                update_ob,
                                 from,
                                 to,
                                 std_proc_na,
                                 highlight,
                                 issue,
-                                mapping_notes,
-                                update_notes,
+                                notes,
+                                report,
+                                perform_compare,
                                 stp_id,
                                 project_dictionary,
                                 project_directory) {
@@ -32,7 +33,7 @@ update_stp_mappings <- function(df_name,
 
 
   # Try to read current mapping
-  stp_ob = get_stp_object(stp_project_dictionary,
+  stp_ob = get_stp_object(project_dictionary,
                           dir = project_directory,
                           file_type = "current")
 
@@ -45,7 +46,7 @@ update_stp_mappings <- function(df_name,
 
   if (existing_rows > 0) {
 
-    if (stp_project_dictionary$allow_overwrite_artifacts_global == FALSE) { # TODO: again, consider get() function
+    if (project_dictionary$allow_overwrite_artifacts_global == FALSE) { # TODO: again, consider get() function
 
       warning("Rows exist for ... but allow_overwrite_artifacts_global is set to FALSE.")
       return() # TODO: likely need to update return statement
@@ -59,9 +60,9 @@ update_stp_mappings <- function(df_name,
     }
   }
 
-  # TODO: add data-type checks for the input data?  must have stp_id... must have a map_ob?
+  # TODO: add data-type checks for the input data?  must have stp_id... must have a ref_ob?
 
-  compare_path = stp_project_dictionary$compare_metadata_path
+  compare_path = project_dictionary$compare_metadata_path
   has_update_ob = as.numeric(!is.null(update_ob))
 
   stp_ob$mapping_items = stp_ob$mapping_items %>% # TODO: add "|" that if strings are "" function... is.null.. is.na or "", then they are saved as empty character
@@ -71,20 +72,20 @@ update_stp_mappings <- function(df_name,
       from = if_else(is.null(from), character(), from),
       to = if_else(is.null(to), character(), to),
       std_proc_na = if_else(is.null(std_proc_na), character(), as.character(std_proc_na)),
-      mapping_notes = if_else(is.null(mapping_notes), character(), mapping_notes),
-      update_notes = if_else(is.null(update_notes), character(), update_notes),
+      notes = if_else(is.null(notes), character(), notes),
       highlight = if_else(is.null(highlight), FALSE, highlight),
       issue = if_else(is.null(issue), FALSE, issue),
+      report = if_else(is.null(report), FALSE, report),
+      perform_compare = if_else(is.null(perform_compare), FALSE, perform_compare),
       compare_path = if_else(is.null(compare_path), character(), compare_path),
-      report = if_else(is.null(report), TRUE, report), # default to true
-      map_ob = if_else(is.null(map_ob), list(), map_ob),
-      update_ob = if_else(is.null(map_diff), list(), map_diff),
+      ref_ob = if_else(is.null(ref_ob), list(), ref_ob),
+      update_ob = if_else(is.null(update_ob), list(), update_ob),
       has_update_ob = has_update_ob,
       timestamp = lubridate::now()
     )
 
   # TODO: need to add path check
-  saveRDS(stp_ob, file.path(project_directory, stp_project_dictionary$current_metadata_path))
+  saveRDS(stp_ob, file.path(project_directory, project_dictionary$current_metadata_path))
 
 }
 

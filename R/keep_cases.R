@@ -12,9 +12,9 @@ keep_cases <- function(data_df = NULL,
                        keep_logic,
                        highlight = FALSE, # similar with issue... this would initially apply the mapping and not the update items
                        issue = FALSE, # TODO: if you say issue = 1... start with just the mapping itself... but there should be a way to deal with to highlight the update artifact for issue tracking...
-                       filter_notes = NULL,
-                       update_notes = NULL,
-                       artifact = TRUE, # create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)
+                       notes = NULL,
+                       save_artifact = TRUE, # create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)
+                       report = TRUE,
                        perform_compare = TRUE, # case where you just want to highlight something, but didn't want to "enforce" any particular relationship
                        project_dictionary = get_project_dictionary(),
                        project_directory = here::here())
@@ -41,7 +41,7 @@ keep_cases <- function(data_df = NULL,
 
   filter_new = NULL
   filter_missing = NULL # Note: don't track 'filter_changed' (that is where the non_id_var values changed for a given filter id set)
-  filter_diff = NULL
+  update_ob = NULL
 
 
   data_df <- data_df %>%
@@ -63,11 +63,11 @@ keep_cases <- function(data_df = NULL,
 
 
   ## If writing or comparing, determined document id (only need if going to save out)
-  if (artifact) {
+  if (save_artifact) {
 
-    if (stp_project_dictionary$compare_artifacts_global & perform_compare) { # TODO: update the stp_project_dictionary piece to a get() function that can give a warning when there's not a TRUE/FALSE value for this field
+    if (project_dictionary$compare_artifacts_global & perform_compare) { # TODO: update the project_dictionary piece to a get() function that can give a warning when there's not a TRUE/FALSE value for this field
 
-      stp_comp_ob = get_stp_object(stp_project_dictionary,
+      stp_comp_ob = get_stp_object(project_dictionary,
                                    dir = project_directory,
                                    file_type = "compare")
 
@@ -81,7 +81,7 @@ keep_cases <- function(data_df = NULL,
       # get compare mapping
       compare_cases = stp_comp_ob$filter_items %>%
         dplyr::filter(id == stp_id) %>%
-        dplyr::pull(filter_ob) # todo... have to update this syntax... [[.]]?
+        dplyr::pull(ref_ob) # todo... have to update this syntax... [[.]]?
 
       # TODO: confirm there only one such of these items... confirm existence
       # TODO: compare the column field names... might need to include this in the optional traversing name updates
@@ -109,7 +109,7 @@ keep_cases <- function(data_df = NULL,
 
 
 
-      filter_diff <- filter_missing %>%
+      update_ob <- filter_missing %>%
         dplyr::bind_rows(filter_new) %>%
         dplyr::arrange(.stp_compare_order_num, dplyr::all_of(id_vars, non_id_vars)) %>%
         dplyr::select(-.stp_compare_order_num) # TODO: maybe keep and only remove when printing/returning?
@@ -118,23 +118,26 @@ keep_cases <- function(data_df = NULL,
 
 
     #   - save out mapping, update artifact, and update issues
-    if (stp_project_dictionary$save_metadata_global) {
+    if (project_dictionary$save_metadata_global) {
 
       df_name = deparse(substitute(data_df)) # TODO: likely need checks added to this kind of call
 
-      # Need to send project dictionary... need to send compare? ... only check if the map_diff is not null?
+      # Need to send project dictionary... need to send compare? ... only check if the remove_cases is not null?
       # Need to send the notes
 
       update_stp_filtered(
         df_name,
+        ref_ob = remove_cases,
+        update_ob,
         stp_id,
         id_vars,
         group_by_vars,
         keep_logic,
         highlight,
         issue,
-        filter_notes,
-        update_notes,
+        notes,
+        report,
+        perform_compare,
         project_dictionary,
         project_directory
       )
@@ -143,19 +146,19 @@ keep_cases <- function(data_df = NULL,
   }
 
 
-  if (stp_project_dictionary$console_output_global) {
+  if (project_dictionary$console_output_global) {
 
     # TODO: update how these are formatted/what text accompanies
 
     # TODO: update function used to output messages... what's the recommended approach? message("") for text.. but for dataframes?
-    message("New Mapping:")
-    print(new_map)
+    message("Filtered cases:")
+    print(remove_cases)
 
-    if (!is.null(map_diff)){
+    if (!is.null(update_ob)){
 
-      if (nrow(map_diff) > 0) {
-        message("Updated Mappings:") # TODO: add exclusion statement if std_proc_na is not null
-        print(map_diff)
+      if (nrow(update_ob) > 0) {
+        message("Updated filtered:")
+        print(update_ob)
       }
     }
 
@@ -164,11 +167,9 @@ keep_cases <- function(data_df = NULL,
   }
 
   return(invisible(
-    new_map %>%
-      dplyr::mutate(current_mapping = 1) %>%
-      bind_rows(map_diff)
+    remove_cases %>%
+      dplyr::mutate(current_filtering = 1) %>%
+      bind_rows(update_ob)
   ))
-
-  # TODO: return new mapping and updated mappings in a single object...
 
 }

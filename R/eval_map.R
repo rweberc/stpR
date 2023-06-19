@@ -9,9 +9,9 @@
 #' @param issue
 #' @param id
 #' @param notes
-#' @param artifact
-#' @param no_report
-#' @param compare
+#' @param save_artifact
+#' @param report
+#' @param perform_compare
 #' @param stpr_ob
 #'
 #' @return
@@ -25,11 +25,10 @@ eval_fields <- function(data_df = NULL,
                         std_proc_na = NULL,
                         highlight = FALSE, # similar with issue... this would initially apply the mapping and not the update items
                         issue = FALSE, # TODO: if you say issue = 1... start with just the mapping itself... but there should be a way to deal with to highlight the update artifact for issue tracking...
-                        mapping_notes = NULL,
-                        update_notes = NULL,
+                        notes = NULL,
                         stp_id = NULL,
-                        artifact = TRUE, # create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)
-                        # document = TRUE, # hmmm?
+                        save_artifact = TRUE, # create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)
+                        report = TRUE,
                         perform_compare = TRUE, # case where you just want to highlight something, but didn't want to "enforce" any particular relationship
                         project_dictionary = get_project_dictionary(),
                         project_directory = here::here())
@@ -53,7 +52,7 @@ eval_fields <- function(data_df = NULL,
   map_new = NULL
   map_changed = NULL
   map_missing = NULL
-  map_diff = NULL
+  ref_ob = NULL
 
 
   # limit to fields of interest
@@ -76,7 +75,7 @@ eval_fields <- function(data_df = NULL,
 
 
   ## If writing or comparing, determined document id (only need if going to save out)
-  if (artifact) {
+  if (save_artifact) {
 
     if (is.null(stp_id)) {
       if (length(to) == 1) {
@@ -86,9 +85,9 @@ eval_fields <- function(data_df = NULL,
       }
     }
 
-    if (stp_project_dictionary$compare_artifacts_global & perform_compare) { # TODO: update the stp_project_dictionary piece to a get() function that can give a warning when there's not a TRUE/FALSE value for this field
+    if (project_dictionary$compare_artifacts_global & perform_compare) { # TODO: update the project_dictionary piece to a get() function that can give a warning when there's not a TRUE/FALSE value for this field
 
-      stp_comp_ob = get_stp_object(stp_project_dictionary,
+      stp_comp_ob = get_stp_object(project_dictionary,
                                    dir = project_directory,
                                    file_type = "compare")
 
@@ -102,7 +101,7 @@ eval_fields <- function(data_df = NULL,
       # get compare mapping
       compare_map = stp_comp_ob$mapping_items %>%
         dplyr::filter(id == stp_id) %>%
-        dplyr::pull(map_ob) # todo... have to update this syntax... [[.]]?
+        dplyr::pull(ref_ob) # todo... have to update this syntax... [[.]]?
 
       # TODO: confirm there only one such of these items... confirm existence
       # TODO: compare the column field names... might need to include this in the optional traversing name updates
@@ -160,7 +159,7 @@ eval_fields <- function(data_df = NULL,
         dplyr::bind_rows(new_map_anti)
 
 
-      map_diff <- map_missing %>%
+      update_ob <- map_missing %>%
         dplyr::bind_rows(map_new) %>%
         dplyr::bind_rows(map_changed)%>%
         dplyr::arrange(.stp_compare_order_num, dplyr::all_of(from, to)) %>%
@@ -170,24 +169,25 @@ eval_fields <- function(data_df = NULL,
 
 
     #   - save out mapping, update artifact, and update issues
-    if (stp_project_dictionary$save_metadata_global) {
+    if (project_dictionary$save_metadata_global) {
 
       df_name = deparse(substitute(data_df)) # TODO: likely need checks added to this kind of call
 
-      # Need to send project dictionary... need to send compare? ... only check if the map_diff is not null?
+      # Need to send project dictionary... need to send compare? ... only check if the update_ob is not null?
       # Need to send the notes
 
       update_stp_mappings(
         df_name,
-        map_ob = new_map,
-        map_diff,
+        ref_ob = new_map,
+        update_ob,
         from,
         to,
         std_proc_na,
         highlight,
         issue,
-        mapping_notes,
-        update_notes,
+        notes,
+        report,
+        perform_compare,
         stp_id,
         project_dictionary,
         project_directory
@@ -197,7 +197,7 @@ eval_fields <- function(data_df = NULL,
   }
 
 
-  if (stp_project_dictionary$console_output_global) {
+  if (project_dictionary$console_output_global) {
 
     # TODO: update how these are formatted/what text accompanies
 
@@ -205,11 +205,11 @@ eval_fields <- function(data_df = NULL,
     message("New Mapping:")
     print(new_map)
 
-    if (!is.null(map_diff)){
+    if (!is.null(update_ob)){
 
-      if (nrow(map_diff) > 0) {
+      if (nrow(update_ob) > 0) {
         message("Updated Mappings:") # TODO: add exclusion statement if std_proc_na is not null
-        print(map_diff)
+        print(update_ob)
       }
     }
 
@@ -220,7 +220,7 @@ eval_fields <- function(data_df = NULL,
   return(invisible(
     new_map %>%
       dplyr::mutate(current_mapping = 1) %>%
-      bind_rows(map_diff)
+      bind_rows(update_ob)
   ))
 
   # TODO: return new mapping and updated mappings in a single object...
@@ -330,11 +330,11 @@ get_project_dictionary <- function(filename = "project_dictionary.yaml", dir = h
   # TODO: Add warning that it's needed and suggestion, if not available, use x() to create it
 
   # Attempt to read the dictionary from the path
-  stp_project_dictionary = yaml.load_file(file.path(dir, filename))
+  project_dictionary = yaml.load_file(file.path(dir, filename))
 
   # TODO: add in validation for dictionary object
 
-  return(stp_project_dictionary)
+  return(project_dictionary)
 
 }
 
@@ -343,18 +343,31 @@ get_project_dictionary <- function(filename = "project_dictionary.yaml", dir = h
 #'
 #' @export
 #'
-get_stp_object <- function(stp_project_dictionary, dir = here::here(), file_type = "current") {
+get_stp_object <- function(project_dictionary, dir = here::here(), file_type = "current") {
 
   # TODO: if not available, warning?  add in suggestion for creating... populate with suggested path?
 
   # TODO: add in additional validation for files found or not...
 
+  # TODO: consider the cases where you would and wouldn't want to handle the items not being there and what type of response should be given in each of these cases.
+
   if (file_type == "current")
-    stp_object = readRDS(file.path(dir, stp_project_dictionary$current_metadata_filenames))
+    path_to_read = file.path(dir, project_dictionary$current_metadata_filenames)
   else if (file_type == "compare")
-    stp_object = readRDS(file.path(dir, stp_project_dictionary$compare_metadata_filenames))
+    path_to_read = file.path(dir, project_dictionary$compare_metadata_filenames)
   else
-    stop("Error: file_type not valid.")
+    stop("Error: file_type '{file_type}' not valid." %>% glue::glue())
+
+
+  stp_object = NULL
+
+  if (file.exists(path_to_read))
+    stp_object = readRDS(path_to_read)
+  else {
+    message("stp_ob doesn't exist at: '{path_to_read}'.  Returning empty stp_ob...")
+    if (usethis::ui_yeah("Save empty stp_ob at this path?" %>% glue::glue())) # TODO: add in warning that this makes a lot less sense for "compare" file types...
+      stp_object = create_stp_ob(save_to_path)
+  }
 
   # TODO: add in validation for compare object
 

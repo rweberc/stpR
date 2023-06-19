@@ -37,7 +37,7 @@ assert_distinct <- function(data_df,
     error_print <- paste0("Assert distinct failed.")
 
     ### TODO: save mult
-    if (stp_project_dictionary$save_metadata_global) {
+    if (project_dictionary$save_metadata_global) {
 
       log_item(type = "ALERT",
                item = error_print,
@@ -48,7 +48,7 @@ assert_distinct <- function(data_df,
                project_directory = project_directory)
     }
 
-    if (stp_project_dictionary$console_output_global) {
+    if (project_dictionary$console_output_global) {
       print(multDf)
     }
 

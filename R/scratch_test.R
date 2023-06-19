@@ -14,7 +14,7 @@ library(usethis)
 # get_project_dictionary()
 #     default path would be at top-level of project, but could give another path
 
-# TODO: I have new_map and map_ob... referred to at various times... I should pick one...
+# TODO: I have new_map and map_ob/ref_ob... referred to at various times... I should pick one...
 
 # TODO: consider having option for filter/ques cases to return metadata object... could include all the things
 # TODO: consider again how you could integrate in the summary-by type options... I think it could be really helpful to have that incorporated as something you're checking regularly
@@ -79,46 +79,4 @@ library(usethis)
 
 # TODO: update the main functions to have an option to modify what they return... (update fields, all fields, etc.)
 
-
-
-# "Metadata"
-#
-# "Metadata/Alerts"
-# "Metadata/Alerts/Errors"
-#
-# "Metadata/Alerts/Update Issues"
-#
-# "Metadata/Alerts/Update Issues/Continuous"
-# "Metadata/Alerts/Update Issues/Continuous/Changed"
-# "Metadata/Alerts/Update Issues/Continuous/New"
-# "Metadata/Alerts/Update Issues/Continuous/No Comparison"
-#
-# "Metadata/Alerts/Update Issues/Mappings"
-# "Metadata/Alerts/Update Issues/Mappings/Changed"
-# "Metadata/Alerts/Update Issues/Mappings/Missing"
-# "Metadata/Alerts/Update Issues/Mappings/New"
-# "Metadata/Alerts/Update Issues/Mappings/No Comparison"
-#
-# "Metadata/Alerts/Update Issues/Filtered"
-# "Metadata/Alerts/Update Issues/Filtered/Changed"
-# "Metadata/Alerts/Update Issues/Filtered/New"
-# "Metadata/Alerts/Update Issues/Filtered/No Comparison"
-#
-# "Metadata/Allowed Values"
-# "Metadata/Allowed Values/Continuous"
-# "Metadata/Allowed Values/Filter Cases"
-# "Metadata/Allowed Values/Mappings"
-# "Metadata/Allowed Values/Question Cases"
-#
-# "Metadata/Data Features"
-#
-# "Metadata/Issues"
-#
-# "Metadata/Line Logs"
-#
-# "Metadata/Line Logs/Calls"
-#
-# "Metadata/Line Logs/Comments"
-#
-# "Metadata/Line Logs/Todos"
-
+# TODO: consider if it's worth having a function of non-negative?

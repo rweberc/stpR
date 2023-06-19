@@ -7,7 +7,7 @@
 #'
 # TODO: take in path to attempt to read object
 # TODO: add timestamps
-create_stp_ob <- function() {
+create_stp_ob <- function(save_to_path = NULL) {
 
   mapping_items = tibble::tibble(
     # field_type = character(), # expect: cat(egorical) or cont(inuous)
@@ -17,31 +17,33 @@ create_stp_ob <- function() {
     from = character(),
     to = character(),
     std_proc_na = character(), # TODO: should this be character or list of the actual functions themselves?
-    mapping_notes = character(),
-    update_notes = character(),
+    notes = character(),
     highlight = logical(),
     issue = logical(),
-    compare_path = character(),
     report = logical(), # default to true
-    map_ob = list(),
+    perform_compare = logical(), # default to true
+    compare_path = character(),
+    ref_ob = list(),
     update_ob = list(),
     has_update_ob = logical(),
     timestamp = POSIXct() # todo check type
   )
 
   # TODO: update with reference path that was used to create the compare and possibly the date this was added/updated
+  # TODO: add the filter_logic, etc., to the output object itself... possibly do this also with the std_proc_na ref_ob...
   filter_items = tibble::tibble(
     stp_id = character(),
-    filter_logic = character(), #
-    filter_notes = character(),
-    update_notes = character(),
+    df_name = character(),
+    filter_logic = character(), # Likely need to add back in the group_by_vars, when saving out the filtered cases, so the logic respect it... could have it in the filter statement...
+    notes = character(),
     highlight = logical(),
     issue = logical(),
+    report = logical(), # default to true
     perform_compare = logical(), # default to true
     compare_path = character(),
-    report = logical(), # default to true
-    filter_ob = list(),
+    ref_ob = list(),
     update_ob = list(),
+    has_update_ob = logical(),
     timestamp = POSIXct() # todo check type
   )
 
@@ -56,12 +58,17 @@ create_stp_ob <- function() {
     timestamp = POSIXct() # todo check type
   )
 
-  return(list(
+  stp_ob = list(
     mapping_items = mapping_items,
     filter_items = filter_items,
     # case_items = case_items,
     text_items = text_items)
-  )
+
+  # TODO: add in file check
+  saveRDS(stp_ob,
+          save_to_path)
+
+  return(invisible(stp_ob))
 
 }
 

@@ -1,0 +1,94 @@
+---
+title: "Mapping"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, echo = FALSE, results = 'asis'}
+if (!is.null(params$ref_yaml[[i]]$header))
+  cat('##', params$ref_yaml[[i]]$header, '\n')
+```
+
+```{r, echo=FALSE, results = 'asis'}
+if (!is.null(params$ref_yaml[[i]]$desc))
+  cat(params$ref_yaml[[i]]$desc, '\n')
+```
+
+```{r, echo = FALSE}
+
+data_rds <- readRDS(file = "{params$data_path}/{params$ref_yaml[[i]]$rds_folder}/{params$ref_yaml[[i]]$rds}.rds" %>% 
+          glue::glue())
+
+
+rds_output_type <- ""
+
+if (!is.null(data_rds)) {
+  
+  # These first two conditions are being put here, but likely best dealt with in more structured way outside of this definition
+  if (params$report_type == "summary" & nrow(data_rds) == 0) {
+      
+    rds_output_type <- "no_rows"
+      
+  } else if (params$report_type == "summary" & all(is.na(data_rds))) {
+
+    rds_output_type <- "all_na"
+    
+  } else {
+    
+    rds_output_type <- "df"
+    
+  }
+
+}
+  
+```
+
+```{r, echo = FALSE, results = 'asis'}
+
+if (rds_output_type == "no_rows") {
+  
+    cat('  - *No Issues* (', paste(names(data_rds), collapse = ", "), ')\n')
+      
+  } else if (rds_output_type == "all_na") {
+
+    cat('  - *All values NA* (', paste(names(data_rds), collapse = ", "), ')\n')
+    
+  } 
+
+```
+
+```{r, echo = FALSE}
+
+if (rds_output_type == "df") {
+  
+  if (nrow(data_rds) <= 10) {
+    
+    data_rds %>%
+      DT::datatable(rownames = FALSE,
+                    options = list(dom = 't'))
+    
+  } else {
+    
+    data_rds %>%
+      DT::datatable(rownames = FALSE)
+    
+  }
+  
+}
+
+```
+
+
+```{r, echo = FALSE, results = 'asis'}
+if (!is.null(params$ref_yaml[[i]]$feedback)) {
+  
+  for (j in seq_along(length(params$ref_yaml[[i]]$feedback))) {
+    
+    cat('**Feedback:** ', params$ref_yaml[[i]]$feedback[[j]]$content, '<br>')
+    cat('**By:** ', params$ref_yaml[[i]]$feedback[[j]]$by, '<br>')
+    cat('**Date:** ', as.character(params$ref_yaml[[i]]$feedback[[j]]$date), '<br><br>')
+  }
+}
+
+```

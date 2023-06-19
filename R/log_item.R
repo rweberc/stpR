@@ -25,7 +25,7 @@ log_item <- function(type, # TODO: I think there is a way to specify limited set
   # TODO: check for existence of row (only allow for complete overwrite or addition?)
 
   # Try to read current mapping
-  stp_ob = get_stp_object(stp_project_dictionary,
+  stp_ob = get_stp_object(project_dictionary,
                           dir = project_directory,
                           file_type = "current")
 
@@ -46,7 +46,7 @@ log_item <- function(type, # TODO: I think there is a way to specify limited set
 
   if (existing_rows > 0) {
 
-    if (stp_project_dictionary$allow_overwrite_artifacts_global == FALSE) { # TODO: again, consider get() function
+    if (project_dictionary$allow_overwrite_artifacts_global == FALSE) { # TODO: again, consider get() function
 
       warning("Rows exist for ... but allow_overwrite_artifacts_global is set to FALSE.")
 
@@ -75,7 +75,7 @@ log_item <- function(type, # TODO: I think there is a way to specify limited set
     )
 
   # TODO: need to add path check
-  saveRDS(stp_ob, file.path(project_directory, stp_project_dictionary$current_metadata_path))
+  saveRDS(stp_ob, file.path(project_directory, project_dictionary$current_metadata_path))
 
 }
 

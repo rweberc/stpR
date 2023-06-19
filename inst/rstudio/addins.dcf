@@ -1,0 +1,5 @@
+Name: Execute and View
+Description: New Addin Description
+Binding: exec_view
+Interactive: false
+

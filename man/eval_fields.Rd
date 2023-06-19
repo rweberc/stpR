@@ -11,10 +11,10 @@ eval_fields(
   std_proc_na = NULL,
   highlight = FALSE,
   issue = FALSE,
-  mapping_notes = NULL,
-  update_notes = NULL,
+  notes = NULL,
   stp_id = NULL,
-  artifact = TRUE,
+  save_artifact = TRUE,
+  report = TRUE,
   perform_compare = TRUE,
   project_dictionary = get_project_dictionary(),
   project_directory = here::here()
