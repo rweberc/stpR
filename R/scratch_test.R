@@ -80,3 +80,12 @@ library(usethis)
 # TODO: update the main functions to have an option to modify what they return... (update fields, all fields, etc.)
 
 # TODO: consider if it's worth having a function of non-negative?
+
+
+# CHECK:
+# when 'do not overwrite' is TRUE, you can stil overwrite the stp_ob in the current data path, right?... but I think you just read in and write out
+#   ... for instance, like with log items
+#   ... I think it is practically governed by: save_metadata_gobal
+
+
+# TODO: can't do a factor...

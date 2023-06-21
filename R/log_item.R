@@ -40,7 +40,7 @@ log_item <- function(type, # TODO: I think there is a way to specify limited set
   # check if stp_ob currently has a row for this id
   existing_rows = stp_ob$text_items %>%
     dplyr::filter(stp_id == stp_id | item == item) %>% # currently... id is read regardless of type...
-    dplyr::nrow()
+    nrow()
 
   # TODO: perhaps have function to do all things like checking for duplicates by id, etc.
 
@@ -65,12 +65,12 @@ log_item <- function(type, # TODO: I think there is a way to specify limited set
   }
 
   stp_ob$text_items = stp_ob$text_items %>% # TODO: add "|" that if strings are "" function... is.null.. is.na or "", then they are saved as empty character
-    add_row(
+    dplyr::add_row(
       type = type, # comment, todo, alert # TODO: consier if "errors/alerts" should be in a separate data object...
       stp_id = stp_id,
       item = item,
-      add_item = if_else(is.null(add_item), character(), add_item),
-      priority = if_else(is.null(priority), character(), priority), # NA for comments
+      add_item = dplyr::if_else(is.null(add_item), character(), add_item),
+      priority = dplyr::if_else(is.null(priority), character(), priority), # NA for comments
       timestamp = lubridate::now()
     )
 

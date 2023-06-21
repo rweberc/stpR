@@ -21,4 +21,4 @@ Imports:
     magrittr,
     rmarkdown,
     stringr,
-    whisker
+    yaml

@@ -19,7 +19,7 @@
 #' @export
 #'
 
-eval_fields <- function(data_df = NULL,
+eval_map <- function(data_df = NULL,
                         from = NULL,
                         to = NULL,
                         std_proc_na = NULL,
@@ -42,6 +42,8 @@ eval_fields <- function(data_df = NULL,
     stop("Cannot remove 'standard processing' values if from and to parameters contain more than one field.")
 
 
+  df_name = deparse(substitute(data_df)) # TODO: likely need checks added to this kind of call - consider removing, since may be dependent on type of data frame passed in
+
   # initialize internal objects
   stp_ob = NULL
   stp_comp_ob = NULL
@@ -52,7 +54,9 @@ eval_fields <- function(data_df = NULL,
   map_new = NULL
   map_changed = NULL
   map_missing = NULL
+
   ref_ob = NULL
+  update_ob = NULL
 
 
   # limit to fields of interest
@@ -71,7 +75,7 @@ eval_fields <- function(data_df = NULL,
   # create current mapping object
   new_map <- data_df %>%
     dplyr::group_by(dplyr::across(dplyr::all_of(c(from, to)))) %>%
-    dplyr::summarize(dplyr::count()) # TODO: consider adding in % for each row
+    dplyr::count() # TODO: consider adding in % for each row
 
 
   ## If writing or comparing, determined document id (only need if going to save out)
@@ -100,7 +104,7 @@ eval_fields <- function(data_df = NULL,
 
       # get compare mapping
       compare_map = stp_comp_ob$mapping_items %>%
-        dplyr::filter(id == stp_id) %>%
+        dplyr::filter(stp_id == stp_id) %>%
         dplyr::pull(ref_ob) # todo... have to update this syntax... [[.]]?
 
       # TODO: confirm there only one such of these items... confirm existence
@@ -171,8 +175,6 @@ eval_fields <- function(data_df = NULL,
     #   - save out mapping, update artifact, and update issues
     if (project_dictionary$save_metadata_global) {
 
-      df_name = deparse(substitute(data_df)) # TODO: likely need checks added to this kind of call
-
       # Need to send project dictionary... need to send compare? ... only check if the update_ob is not null?
       # Need to send the notes
 
@@ -202,7 +204,7 @@ eval_fields <- function(data_df = NULL,
     # TODO: update how these are formatted/what text accompanies
 
     # TODO: update function used to output messages... what's the recommended approach? message("") for text.. but for dataframes?
-    message("New Mapping:")
+    message("Current Mapping:")
     print(new_map)
 
     if (!is.null(update_ob)){
@@ -213,14 +215,16 @@ eval_fields <- function(data_df = NULL,
       }
     }
 
-    message("See returned object for further details")
+    if (nrow(new_map) > 9 |
+        (!is.null(update_ob) && nrow(update_ob) > 0))
+      message("See returned object for further details")
 
   }
 
   return(invisible(
     new_map %>%
       dplyr::mutate(current_mapping = 1) %>%
-      bind_rows(update_ob)
+      dplyr::bind_rows(update_ob)
   ))
 
   # TODO: return new mapping and updated mappings in a single object...
@@ -315,65 +319,6 @@ eval_fields <- function(data_df = NULL,
 # from <-  "id"
 # to <- c("col1", "col2")
 
-
-
-#' First attempts to read the project_dictionary file from the current parent environment;
-#' failing that will attempt to read the file from a path, with the default path being at the root level of a project for a file specifically named stpr_project_dictionary
-#'
-#'
-#' @return
-#'
-#' @export
-#'
-get_project_dictionary <- function(filename = "project_dictionary.yaml", dir = here::here()) {
-
-  # TODO: Add warning that it's needed and suggestion, if not available, use x() to create it
-
-  # Attempt to read the dictionary from the path
-  project_dictionary = yaml.load_file(file.path(dir, filename))
-
-  # TODO: add in validation for dictionary object
-
-  return(project_dictionary)
-
-}
-
-#'
-#' @return
-#'
-#' @export
-#'
-get_stp_object <- function(project_dictionary, dir = here::here(), file_type = "current") {
-
-  # TODO: if not available, warning?  add in suggestion for creating... populate with suggested path?
-
-  # TODO: add in additional validation for files found or not...
-
-  # TODO: consider the cases where you would and wouldn't want to handle the items not being there and what type of response should be given in each of these cases.
-
-  if (file_type == "current")
-    path_to_read = file.path(dir, project_dictionary$current_metadata_filenames)
-  else if (file_type == "compare")
-    path_to_read = file.path(dir, project_dictionary$compare_metadata_filenames)
-  else
-    stop("Error: file_type '{file_type}' not valid." %>% glue::glue())
-
-
-  stp_object = NULL
-
-  if (file.exists(path_to_read))
-    stp_object = readRDS(path_to_read)
-  else {
-    message("stp_ob doesn't exist at: '{path_to_read}'.  Returning empty stp_ob...")
-    if (usethis::ui_yeah("Save empty stp_ob at this path?" %>% glue::glue())) # TODO: add in warning that this makes a lot less sense for "compare" file types...
-      stp_object = create_stp_ob(save_to_path)
-  }
-
-  # TODO: add in validation for compare object
-
-  return(stp_object)
-
-}
 
 # TODO: have init_stp() that would suggest and create the needed metadata objects...
 

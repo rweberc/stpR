@@ -40,7 +40,7 @@ update_stp_mappings <- function(df_name,
   # check if stp_ob currently has a row for this id
   existing_rows = stp_ob$filter_items %>%
     dplyr::filter(stp_id == stp_id) %>%
-    dplyr::nrow()
+    nrow()
 
   # TODO: perhaps have function to do all things like checking for duplicates by id, etc.
 
@@ -66,20 +66,20 @@ update_stp_mappings <- function(df_name,
   has_update_ob = as.numeric(!is.null(update_ob))
 
   stp_ob$filter_items = stp_ob$filter_items %>% # TODO: add "|" that if strings are "" function... is.null.. is.na or "", then they are saved as empty character
-    add_row(
-      df_name = if_else(is.null(df_name), character(), df_name),
-      id_vars = if_else(is.null(id_vars), list(), id_vars),
-      group_by_vars = if_else(is.null(group_by_vars), list(), group_by_vars),
-      keep_logic = if_else(is.null(keep_logic), character(), keep_logic),
+    dplyr::add_row(
+      df_name = dplyr::if_else(is.null(df_name), character(), df_name),
+      id_vars = dplyr::if_else(is.null(id_vars), list(), id_vars),
+      group_by_vars = dplyr::if_else(is.null(group_by_vars), list(), group_by_vars),
+      keep_logic = dplyr::if_else(is.null(keep_logic), character(), keep_logic),
       stp_id = stp_id,
-      notes = if_else(is.null(notes), character(), notes),
-      highlight = if_else(is.null(highlight), FALSE, highlight),
-      issue = if_else(is.null(issue), FALSE, issue),
-      report = if_else(is.null(report), FALSE, report),
-      perform_compare = if_else(is.null(perform_compare), FALSE, perform_compare),
-      compare_path = if_else(is.null(compare_path), character(), compare_path),
-      ref_ob = if_else(is.null(ref_ob), list(), ref_ob),
-      update_ob = if_else(is.null(update_ob), list(), update_ob),
+      notes = dplyr::if_else(is.null(notes), character(), notes),
+      highlight = dplyr::if_else(is.null(highlight), FALSE, highlight),
+      issue = dplyr::if_else(is.null(issue), FALSE, issue),
+      report = dplyr::if_else(is.null(report), FALSE, report),
+      perform_compare = dplyr::if_else(is.null(perform_compare), FALSE, perform_compare),
+      compare_path = dplyr::if_else(is.null(compare_path), character(), compare_path),
+      ref_ob = dplyr::if_else(is.null(ref_ob), list(), ref_ob),
+      update_ob = dplyr::if_else(is.null(update_ob), list(), update_ob),
       has_update_ob = has_update_ob,
       timestamp = lubridate::now()
     )

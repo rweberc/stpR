@@ -39,8 +39,8 @@ update_stp_mappings <- function(df_name,
 
   # check if stp_ob currently has a row for this id
   existing_rows = stp_ob$mapping_items %>%
-    dplyr::filter(id == stp_id) %>%
-    dplyr::nrow()
+    dplyr::filter(stp_id == stp_id) %>%
+    nrow()
 
   # TODO: perhaps have function to do all things like checking for duplicates by id, etc.
 
@@ -55,7 +55,7 @@ update_stp_mappings <- function(df_name,
 
       # if overwrite allows, removed existing row before making update
       stp_ob$mapping_items = stp_ob$mapping_items %>%
-        dplyr::filter(id != stp_id)
+        dplyr::filter(stp_id != stp_id)
 
     }
   }
@@ -66,22 +66,22 @@ update_stp_mappings <- function(df_name,
   has_update_ob = as.numeric(!is.null(update_ob))
 
   stp_ob$mapping_items = stp_ob$mapping_items %>% # TODO: add "|" that if strings are "" function... is.null.. is.na or "", then they are saved as empty character
-    add_row(
+    dplyr::add_row(
       stp_id = stp_id,
-      df_name = if_else(is.null(df_name), character(), df_name),
-      from = if_else(is.null(from), character(), from),
-      to = if_else(is.null(to), character(), to),
-      std_proc_na = if_else(is.null(std_proc_na), character(), as.character(std_proc_na)),
-      notes = if_else(is.null(notes), character(), notes),
-      highlight = if_else(is.null(highlight), FALSE, highlight),
-      issue = if_else(is.null(issue), FALSE, issue),
-      report = if_else(is.null(report), FALSE, report),
-      perform_compare = if_else(is.null(perform_compare), FALSE, perform_compare),
-      compare_path = if_else(is.null(compare_path), character(), compare_path),
-      ref_ob = if_else(is.null(ref_ob), list(), ref_ob),
-      update_ob = if_else(is.null(update_ob), list(), update_ob),
-      has_update_ob = has_update_ob,
-      timestamp = lubridate::now()
+      df_name = dplyr::case_when(!is.null(df_name) ~ df_name),
+      # from = dplyr::if_else(is.null(from), character(), from),
+      # to = dplyr::if_else(is.null(to), character(), to),
+      # std_proc_na = dplyr::if_else(is.null(std_proc_na), character(), as.character(std_proc_na)),
+      # notes = dplyr::if_else(is.null(notes), character(), notes),
+      # highlight = dplyr::if_else(is.null(highlight), FALSE, highlight),
+      # issue = dplyr::if_else(is.null(issue), FALSE, issue),
+      # report = dplyr::if_else(is.null(report), FALSE, report),
+      # perform_compare = dplyr::if_else(is.null(perform_compare), FALSE, perform_compare),
+      # compare_path = dplyr::if_else(is.null(compare_path), character(), compare_path),
+      # ref_ob = dplyr::if_else(is.null(ref_ob), list(), ref_ob),
+      # update_ob = dplyr::if_else(is.null(update_ob), list(), update_ob),
+      # has_update_ob = has_update_ob,
+      # timestamp = lubridate::now()
     )
 
   # TODO: need to add path check

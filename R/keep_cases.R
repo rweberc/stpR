@@ -31,6 +31,8 @@ keep_cases <- function(data_df = NULL,
 
   # TODO: input checks (including figuring out if fields are in dataframes of interest)
 
+  df_name = deparse(substitute(data_df)) # TODO: likely need checks added to this kind of call
+
   # initialize internal objects
 
   stp_ob = NULL
@@ -120,8 +122,6 @@ keep_cases <- function(data_df = NULL,
     #   - save out mapping, update artifact, and update issues
     if (project_dictionary$save_metadata_global) {
 
-      df_name = deparse(substitute(data_df)) # TODO: likely need checks added to this kind of call
-
       # Need to send project dictionary... need to send compare? ... only check if the remove_cases is not null?
       # Need to send the notes
 
@@ -169,7 +169,7 @@ keep_cases <- function(data_df = NULL,
   return(invisible(
     remove_cases %>%
       dplyr::mutate(current_filtering = 1) %>%
-      bind_rows(update_ob)
+      dplyr::bind_rows(update_ob)
   ))
 
 }

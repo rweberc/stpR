@@ -7,7 +7,8 @@
 #'
 # TODO: take in path to attempt to read object
 # TODO: add timestamps
-create_stp_ob <- function(save_to_path = NULL) {
+create_stp_ob <- function(save_to_path = NULL,
+                          reset = FALSE) {
 
   mapping_items = tibble::tibble(
     # field_type = character(), # expect: cat(egorical) or cont(inuous)
@@ -26,7 +27,7 @@ create_stp_ob <- function(save_to_path = NULL) {
     ref_ob = list(),
     update_ob = list(),
     has_update_ob = logical(),
-    timestamp = POSIXct() # todo check type
+    timestamp = as.POSIXct(character()) # todo check type
   )
 
   # TODO: update with reference path that was used to create the compare and possibly the date this was added/updated
@@ -44,7 +45,7 @@ create_stp_ob <- function(save_to_path = NULL) {
     ref_ob = list(),
     update_ob = list(),
     has_update_ob = logical(),
-    timestamp = POSIXct() # todo check type
+    timestamp = as.POSIXct(character()) # todo check type
   )
 
   # case_items...
@@ -55,7 +56,7 @@ create_stp_ob <- function(save_to_path = NULL) {
     item = character(),
     add_item = list(),
     priority = character(), # NA for comments
-    timestamp = POSIXct() # todo check type
+    timestamp = as.POSIXct(character()) # todo check type
   )
 
   stp_ob = list(
@@ -64,9 +65,25 @@ create_stp_ob <- function(save_to_path = NULL) {
     # case_items = case_items,
     text_items = text_items)
 
-  # TODO: add in file check
-  saveRDS(stp_ob,
-          save_to_path)
+  # TODO: add in dir.exists check...
+
+  # TODO: consider incorporating project_dictionary globals:
+  # save_metadata_gobal
+  # allow_overwrite_artifacts_global
+
+  if (file.exists(save_to_path) & reset == FALSE)
+    message("Files already exists and `reset` = FALSE; no object saved at: '{save_to_path}'")
+  else if (file.exists(save_to_path) & reset == TRUE) {
+    if (usethis::ui_yeah("stp_ob exists at path: '{save_to_path}'.  Confirm overwrite with an empty stp_ob:")) {
+      saveRDS(stp_ob, save_to_path)
+      usethis::ui_done("New stp_ob created at: '{save_to_path}'")
+    }
+  } else {
+    saveRDS(stp_ob, save_to_path)
+    usethis::ui_done("New stp_ob created at: '{save_to_path}'")
+  }
+
+
 
   return(invisible(stp_ob))
 
