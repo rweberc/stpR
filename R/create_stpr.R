@@ -8,7 +8,9 @@
 # TODO: take in path to attempt to read object
 # TODO: add timestamps
 create_stp_ob <- function(save_to_path = NULL,
-                          reset = FALSE) {
+                          reset = FALSE,
+                          dir = here::here(),
+                          project_dictionary = get_project_dictionary()) {
 
   mapping_items = tibble::tibble(
     # field_type = character(), # expect: cat(egorical) or cont(inuous)
@@ -17,7 +19,7 @@ create_stp_ob <- function(save_to_path = NULL,
     df_name = character(),
     from = character(),
     to = character(),
-    std_proc_na = character(), # TODO: should this be character or list of the actual functions themselves?
+    std_proc_na = list(), # TODO: should this be character or list of the actual functions themselves?
     notes = character(),
     highlight = logical(),
     issue = logical(),
@@ -33,9 +35,11 @@ create_stp_ob <- function(save_to_path = NULL,
   # TODO: update with reference path that was used to create the compare and possibly the date this was added/updated
   # TODO: add the filter_logic, etc., to the output object itself... possibly do this also with the std_proc_na ref_ob...
   filter_items = tibble::tibble(
-    stp_id = character(),
     df_name = character(),
-    filter_logic = character(), # Likely need to add back in the group_by_vars, when saving out the filtered cases, so the logic respect it... could have it in the filter statement...
+    id_vars = character(),
+    group_by_vars = character(),
+    keep_logic = character(),
+    stp_id = character(),
     notes = character(),
     highlight = logical(),
     issue = logical(),
@@ -53,8 +57,8 @@ create_stp_ob <- function(save_to_path = NULL,
   text_items = tibble::tibble(
     type = character(), # comment, todo, alert # TODO: consier if "errors/alerts" should be in a separate data object...
     stp_id = character(),
-    item = character(),
-    add_item = list(),
+    item = character(), # could be "notes"
+    add_item = list(), # could be "ref_ob"
     priority = character(), # NA for comments
     timestamp = as.POSIXct(character()) # todo check type
   )
@@ -70,6 +74,11 @@ create_stp_ob <- function(save_to_path = NULL,
   # TODO: consider incorporating project_dictionary globals:
   # save_metadata_gobal
   # allow_overwrite_artifacts_global
+
+  # If save_to_path is NULL, try to get the write path from the current_metadata_path
+  if (is.null(save_to_path)) {
+    save_to_path = file.path(dir, project_dictionary$current_metadata_path) # TODO: add in data check...
+  }
 
   if (file.exists(save_to_path) & reset == FALSE)
     message("Files already exists and `reset` = FALSE; no object saved at: '{save_to_path}'")

@@ -14,11 +14,14 @@ update_stp_mappings <- function(df_name,
                                 notes,
                                 report,
                                 perform_compare,
-                                stp_id,
+                                stp_id_var,
                                 project_dictionary,
                                 project_directory) {
 
   # TODO: have option to read this, then make update and write it to directory, then return the copy to work from...
+
+  # TODO: Possibly consider having default options for this... if default = TRUE... will only just fill in those values...
+  #         and can have default set to TRUE by default, but in the update_xyz_object calls... would be set to FALSE to prevent writing without sufficient values...
 
   # TODO: check for existence of stp_ob (when update = TRUE)
 
@@ -39,7 +42,7 @@ update_stp_mappings <- function(df_name,
 
   # check if stp_ob currently has a row for this id
   existing_rows = stp_ob$mapping_items %>%
-    dplyr::filter(stp_id == stp_id) %>%
+    dplyr::filter(stp_id == stp_id_var) %>%
     nrow()
 
   # TODO: perhaps have function to do all things like checking for duplicates by id, etc.
@@ -55,33 +58,33 @@ update_stp_mappings <- function(df_name,
 
       # if overwrite allows, removed existing row before making update
       stp_ob$mapping_items = stp_ob$mapping_items %>%
-        dplyr::filter(stp_id != stp_id)
+        dplyr::filter(stp_id != stp_id_var)
 
     }
   }
 
-  # TODO: add data-type checks for the input data?  must have stp_id... must have a ref_ob?
+  # TODO: add data-type checks for the input data?  must have stp_id_var must have a ref_ob?
 
   compare_path = project_dictionary$compare_metadata_path
   has_update_ob = as.numeric(!is.null(update_ob))
 
   stp_ob$mapping_items = stp_ob$mapping_items %>% # TODO: add "|" that if strings are "" function... is.null.. is.na or "", then they are saved as empty character
     dplyr::add_row(
-      stp_id = stp_id,
-      df_name = dplyr::case_when(!is.null(df_name) ~ df_name),
-      # from = dplyr::if_else(is.null(from), character(), from),
-      # to = dplyr::if_else(is.null(to), character(), to),
-      # std_proc_na = dplyr::if_else(is.null(std_proc_na), character(), as.character(std_proc_na)),
-      # notes = dplyr::if_else(is.null(notes), character(), notes),
-      # highlight = dplyr::if_else(is.null(highlight), FALSE, highlight),
-      # issue = dplyr::if_else(is.null(issue), FALSE, issue),
-      # report = dplyr::if_else(is.null(report), FALSE, report),
-      # perform_compare = dplyr::if_else(is.null(perform_compare), FALSE, perform_compare),
-      # compare_path = dplyr::if_else(is.null(compare_path), character(), compare_path),
-      # ref_ob = dplyr::if_else(is.null(ref_ob), list(), ref_ob),
-      # update_ob = dplyr::if_else(is.null(update_ob), list(), update_ob),
-      # has_update_ob = has_update_ob,
-      # timestamp = lubridate::now()
+      stp_id = stp_id_var,
+      df_name = ifelse(is.null(df_name), character(), df_name),
+      from = ifelse(is.null(from), character(), from),
+      to = ifelse(is.null(to), character(), to),
+      std_proc_na = ifelse(is.null(std_proc_na), list(), list(std_proc_na)),
+      notes = ifelse(is.null(notes), character(), notes),
+      highlight = ifelse(is.null(highlight), FALSE, highlight),
+      issue = ifelse(is.null(issue), FALSE, issue),
+      report = ifelse(is.null(report), FALSE, report),
+      perform_compare = ifelse(is.null(perform_compare), FALSE, perform_compare),
+      compare_path = ifelse(is.null(compare_path), character(), compare_path),
+      ref_ob = ifelse(is.null(ref_ob), list(), ref_ob),
+      update_ob = ifelse(is.null(update_ob), list(), update_ob),
+      has_update_ob = has_update_ob,
+      timestamp = lubridate::now()
     )
 
   # TODO: need to add path check

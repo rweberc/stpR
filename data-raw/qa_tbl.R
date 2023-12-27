@@ -38,7 +38,7 @@ qa_tbl <- tibble::tibble(
 
 # Problem cases/relationships to make before creating general raw variables
 qa_tbl <- qa_tbl %>%
-  mutate(age = case_when(col_id == 267 & age == 25 ~ 15,
+  mutate(age = case_when(col_id == 267 & age == 54 ~ 15,
                     TRUE ~ age),
          trt = case_when(stage == "T4" ~ "Drug B",
                          TRUE ~ trt) # create artificial relationship that may be a fictious relationship in the data
@@ -55,14 +55,15 @@ qa_tbl <- qa_tbl %>%
 # Add in 'problem' cases that should occur after the general raw variable create
 # These basically represent processing that would be do within the setups themselves...
 qa_tbl <- qa_tbl %>%
-  mutate(TRT_RAW = case_when(col_id == 208 & TRT_RAW == "Drug A" ~ 'Drug 1',
+  mutate(TRT_RAW = case_when(col_id == 208 & TRT_RAW == "Drug B" ~ 'Drug 2',
                              col_id == 53 & TRT_RAW == "Drug A" ~ 'First Group',
                              TRUE ~ TRT_RAW),
-         AGE_RAW = case_when(col_id == 143 & AGE_RAW == "20" ~ 'twenty',
+         AGE_RAW = case_when(col_id == 29 & AGE_RAW == "20" ~ 'twenty',
                              TRUE ~ AGE_RAW),
+         age = case_when(!(col_id %in% c(29)) ~ age),
          visit_type = case_when(visit_codes %in% c("001", "1000") ~ "Inpatient",
                                 visit_codes %in% c("1242", "34342") ~ "Outpatient"),
-         EVENT_DATE_RAW = case_when(col_id == 143 ~ "4 7, 21",
+         EVENT_DATE_RAW = case_when(col_id == 143 ~ "10 8, 20",
                                     col_id == 69 ~ "4th May this year",
                                     TRUE ~ EVENT_DATE_RAW),
          event_date = case_when(!(col_id %in% c(69, 143)) ~ event_date)

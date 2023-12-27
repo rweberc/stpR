@@ -20,18 +20,19 @@
 #'
 
 eval_map <- function(data_df = NULL,
-                        from = NULL,
-                        to = NULL,
-                        std_proc_na = NULL,
-                        highlight = FALSE, # similar with issue... this would initially apply the mapping and not the update items
-                        issue = FALSE, # TODO: if you say issue = 1... start with just the mapping itself... but there should be a way to deal with to highlight the update artifact for issue tracking...
-                        notes = NULL,
-                        stp_id = NULL,
-                        save_artifact = TRUE, # create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)
-                        report = TRUE,
-                        perform_compare = TRUE, # case where you just want to highlight something, but didn't want to "enforce" any particular relationship
-                        project_dictionary = get_project_dictionary(),
-                        project_directory = here::here())
+                     from = NULL,
+                     to = NULL,
+                     std_proc_na = as.numeric,
+                     highlight = FALSE, # similar with issue... this would initially apply the mapping and not the update items
+                     issue = FALSE, # TODO: if you say issue = 1... start with just the mapping itself... but there should be a way to deal with to highlight the update artifact for issue tracking...
+                     notes = NULL,
+                     stp_id = NULL,
+                     save_artifact = TRUE, # create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)
+                     report = TRUE,
+                     perform_compare = TRUE, # case where you just want to highlight something, but didn't want to "enforce" any particular relationship
+                     project_dictionary = get_project_dictionary(),
+                     project_directory = here::here(),
+                     summary = FALSE)
 {
 
   # input checks
@@ -41,10 +42,10 @@ eval_map <- function(data_df = NULL,
   if (!is.null(std_proc_na) & (length(to) > 1 | length(from) > 1))
     stop("Cannot remove 'standard processing' values if from and to parameters contain more than one field.")
 
-
-  df_name = deparse(substitute(data_df)) # TODO: likely need checks added to this kind of call - consider removing, since may be dependent on type of data frame passed in
-
   # initialize internal objects
+  df_name = NULL
+  var_list = NULL
+
   stp_ob = NULL
   stp_comp_ob = NULL
 
@@ -59,24 +60,40 @@ eval_map <- function(data_df = NULL,
   update_ob = NULL
 
 
-  # limit to fields of interest
-  data_df <- data_df %>%
-    dplyr::ungroup() %>%
-    dplyr::select(dplyr::all_of(c(from, to))) %>%
-    dplyr::arrange(dplyr::arrange(dplyr::across(dplyr::all_of(c(to, from)))))
+  # This is the default cases where the from and to columns are used to define the dataframe being evaluated
+  if (!summary) {
+    df_name = deparse(substitute(data_df)) # TODO: likely need checks added to this kind of call - consider removing, since may be dependent on type of data frame passed in
 
+    var_list = c(from, to)
 
-  # if std_proc_na, only keep those cases that resultin NA for the standard processing
-  if (!is.null(std_proc_na))
+    # limit to fields of interest
     data_df <- data_df %>%
-      dplyr::filter(is.na(suppressWarnings(std_proc_na(dplyr::all_of(from)))))
+      dplyr::ungroup() %>%
+      dplyr::select(dplyr::all_of(c(from, to))) %>%
+      dplyr::arrange(dplyr::arrange(dplyr::across(dplyr::all_of(c(to, from)))))
 
 
-  # create current mapping object
-  new_map <- data_df %>%
-    dplyr::group_by(dplyr::across(dplyr::all_of(c(from, to)))) %>%
-    dplyr::count() # TODO: consider adding in % for each row
+    # if std_proc_na, only keep those cases that resultin NA for the standard processing
+    if (!is.null(std_proc_na))
+      data_df <- data_df %>%
+        dplyr::filter_at(from, ~ is.na(suppressWarnings(std_proc_na(.))))
 
+
+    # create current mapping object
+    new_map <- data_df %>%
+      dplyr::group_by(dplyr::across(dplyr::all_of(c(from, to)))) %>%
+      dplyr::count() # TODO: consider adding in % for each row
+
+  } else {
+
+    df_name = NULL
+
+    var_list = names(data_df)
+
+    new_map <- data_df %>%
+      dplyr::ungroup()
+
+  }
 
   ## If writing or comparing, determined document id (only need if going to save out)
   if (save_artifact) {
@@ -138,7 +155,7 @@ eval_map <- function(data_df = NULL,
                           by = from) %>%
         unique() %>% #
         dplyr::anti_join(new_map,
-                         by = c(from, to)) %>%
+                         by = var_list) %>%
         unique() %>%
         dplyr::mutate(.stp_compare_order_num = 2,
                       compare_results = "changed `to` [old]")
@@ -150,7 +167,7 @@ eval_map <- function(data_df = NULL,
                           by = from) %>%
         unique() %>%
         dplyr::anti_join(old_map,
-                         by = c(from, to)) %>%
+                         by = var_list) %>%
         unique() %>%
         dplyr::mutate(.stp_compare_order_num = 2,
                       compare_results = "changed `to` [new]")
@@ -166,7 +183,7 @@ eval_map <- function(data_df = NULL,
       update_ob <- map_missing %>%
         dplyr::bind_rows(map_new) %>%
         dplyr::bind_rows(map_changed)%>%
-        dplyr::arrange(.stp_compare_order_num, dplyr::all_of(from, to)) %>%
+        dplyr::arrange(.stp_compare_order_num, dplyr::all_of(var_list)) %>%
         dplyr::select(-.stp_compare_order_num) # TODO: maybe keep and only remove when printing/returning?
 
     }
@@ -179,20 +196,20 @@ eval_map <- function(data_df = NULL,
       # Need to send the notes
 
       update_stp_mappings(
-        df_name,
+        df_name = df_name,
         ref_ob = new_map,
-        update_ob,
-        from,
-        to,
-        std_proc_na,
-        highlight,
-        issue,
-        notes,
-        report,
-        perform_compare,
-        stp_id,
-        project_dictionary,
-        project_directory
+        update_ob = update_ob,
+        from = from,
+        to = to,
+        std_proc_na = std_proc_na,
+        highlight = highlight,
+        issue = issue,
+        notes = notes,
+        report = report,
+        perform_compare = perform_compare,
+        stp_id_var = stp_id,
+        project_dictionary = project_dictionary,
+        project_directory = project_directory
       )
 
     }

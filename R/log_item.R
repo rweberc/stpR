@@ -63,14 +63,14 @@ log_item <- function(type, # TODO: I think there is a way to specify limited set
 
     }
   }
-
+ # TODO: update to IFELSES
   stp_ob$text_items = stp_ob$text_items %>% # TODO: add "|" that if strings are "" function... is.null.. is.na or "", then they are saved as empty character
     dplyr::add_row(
       type = type, # comment, todo, alert # TODO: consier if "errors/alerts" should be in a separate data object...
       stp_id = stp_id,
       item = item,
-      add_item = dplyr::if_else(is.null(add_item), character(), add_item),
-      priority = dplyr::if_else(is.null(priority), character(), priority), # NA for comments
+      add_item = ifelse(is.null(add_item), list(), add_item),
+      priority = ifelse(is.null(priority), character(), priority),
       timestamp = lubridate::now()
     )
 

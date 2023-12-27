@@ -42,7 +42,7 @@ assert_distinct <- function(data_df,
       log_item(type = "ALERT",
                item = error_print,
                add_item = unionDf, # for now, this is to encompass the assert_distinct, assert_cases scenarios... but right now only do the duplicate checks by "item"... some other work needs to be done here
-               priority = 1,
+               priority = "1",
                stp_id = stp_id, # TODO: is it a concern if id's in different stp_ob entities are the same
                project_dictionary = project_dictionary,
                project_directory = project_directory)

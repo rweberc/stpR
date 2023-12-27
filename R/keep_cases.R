@@ -6,7 +6,7 @@
 #'
 keep_cases <- function(data_df = NULL,
                        stp_id = NULL, # TODO: is it a concern if id's in different stp_ob entities are the same
-                       id_vars,
+                       id_vars, # TODO: is this reasonable to assume that you always have?
                        non_id_vars,
                        group_by_vars = NULL, # possibly can stuff into the logic
                        keep_logic,
@@ -19,17 +19,6 @@ keep_cases <- function(data_df = NULL,
                        project_dictionary = get_project_dictionary(),
                        project_directory = here::here())
 {
-
-
-  # Next to do...
-  # figure out internal objects
-  # do filter
-  # do check on compare (compare just based on ids... forget about the non-id vars for the compare... right?)
-  # create save function
-  # work up output
-
-
-  # TODO: input checks (including figuring out if fields are in dataframes of interest)
 
   df_name = deparse(substitute(data_df)) # TODO: likely need checks added to this kind of call
 
@@ -45,56 +34,47 @@ keep_cases <- function(data_df = NULL,
   filter_missing = NULL # Note: don't track 'filter_changed' (that is where the non_id_var values changed for a given filter id set)
   update_ob = NULL
 
+  # TODO: what if id_vars and non_id_vars do not include group_at_vars... will be included if df already grouped, right?  ... add something explicit?
 
-  data_df <- data_df %>%
-    dplyr::ungroup() %>%
-    dplyr::select(dplyr::all_of(c(id_vars, non_id_vars))) %>%
+  data_df <- data_df  %>%
     dplyr::group_by_at(c(group_by_vars)) # TODO: check that if no group_by_vars are provided, does this ungroup()... does it throw an error?
+
 
 
   # Get cases to filter
   remove_cases <- data_df %>%
-    dplyr::filter((!eval(parse(text = filter_logic))) %>%
-                    tidyr::replace_na(FALSE)) # TODO: add in option with default to either keep or remove the NA cases
+    dplyr::filter((!eval(parse(text = keep_logic))) %>%
+                    tidyr::replace_na(FALSE)) %>% # TODO: add in option with default to either keep or remove the NA cases
+    dplyr::ungroup() %>%
+    dplyr::select(dplyr::all_of(c(id_vars, non_id_vars)))
 
 
   # Get remaining cases to keep
   keep_cases <- data_df %>%
-    dplyr::filter(eval(parse(text = logic)) %>%
-                    tidyr::replace_na(TRUE)) # TODO: add in option with default to either keep or remove the NA cases
+    dplyr::filter(eval(parse(text = keep_logic)) %>%
+                    tidyr::replace_na(TRUE)) %>% # TODO: add in option with default to either keep or remove the NA cases
+    dplyr::ungroup() # TODO: might not be expected that a grouping is removed...
 
 
   ## If writing or comparing, determined document id (only need if going to save out)
   if (save_artifact) {
 
-    if (project_dictionary$compare_artifacts_global & perform_compare) { # TODO: update the project_dictionary piece to a get() function that can give a warning when there's not a TRUE/FALSE value for this field
+    if (project_dictionary$compare_artifacts_global & perform_compare) {
 
       stp_comp_ob = get_stp_object(project_dictionary,
                                    dir = project_directory,
                                    file_type = "compare")
 
       if (is.null(stp_comp_ob))
-        stop("Cannot perform compare of data artifacts when no compare object could be found.") # could put in details of path, etc.)
-      # TODO: if true, update to a break out of compare enclosure and add warning
-
-      # TODO: figure in a mapping option for use against old names fields in previous data (that object would say specify, if comparing this date vs that date for x field, use this mapping, else, look for the current mapping)
-      # TODO: possibly have that mapping say, ignore comparing this for a particular date...
+        stop("Cannot perform compare of data artifacts when no compare object could be found.")
 
       # get compare mapping
       compare_cases = stp_comp_ob$filter_items %>%
         dplyr::filter(id == stp_id) %>%
-        dplyr::pull(ref_ob) # todo... have to update this syntax... [[.]]?
-
-      # TODO: confirm there only one such of these items... confirm existence
-      # TODO: compare the column field names... might need to include this in the optional traversing name updates
-
-      # TODO: have warning about the same columns existing in previous and current
-      # TODO: have warning about classes of columns being the same (add in check that columns have to be atomic type... not checking values of lists, etc.)
-
-      # TODO: decide how to deal with the warning related to many-to-many joins.... just keep it?... always avoid it (since you're outputting the results?)
+        dplyr::pull(ref_ob) # TODO: have to update this syntax... [[.]]?
 
       ## [ new ]
-      filter_new <- filter_cases %>%
+      filter_new <- remove_cases %>%
         dplyr::anti_join(compare_cases %>%
                            dplyr::select(dplyr::all_of(id_vars)),
                          by = id_vars) %>%
@@ -103,13 +83,11 @@ keep_cases <- function(data_df = NULL,
 
       ## [ missing ]
       filter_missing <- compare_cases %>%
-        dplyr::anti_join(filter_cases %>%
+        dplyr::anti_join(remove_cases %>%
                            dplyr::select(dplyr::all_of(id_vars)),
                          by = id_vars) %>%
         dplyr::mutate(.stp_compare_order_num = 2,
                       compare_results = "new in compare")
-
-
 
       update_ob <- filter_missing %>%
         dplyr::bind_rows(filter_new) %>%
@@ -119,27 +97,27 @@ keep_cases <- function(data_df = NULL,
     }
 
 
-    #   - save out mapping, update artifact, and update issues
+    #   Save out mapping, update artifact, and update issues
     if (project_dictionary$save_metadata_global) {
 
       # Need to send project dictionary... need to send compare? ... only check if the remove_cases is not null?
       # Need to send the notes
 
       update_stp_filtered(
-        df_name,
+        df_name = df_name,
         ref_ob = remove_cases,
-        update_ob,
-        stp_id,
-        id_vars,
-        group_by_vars,
-        keep_logic,
-        highlight,
-        issue,
-        notes,
-        report,
-        perform_compare,
-        project_dictionary,
-        project_directory
+        update_ob = update_ob,
+        stp_id_var = stp_id,
+        id_vars = id_vars,
+        group_by_vars = group_by_vars,
+        keep_logic = keep_logic,
+        highlight = highlight,
+        issue = issue,
+        notes = notes,
+        report = report,
+        perform_compare = perform_compare,
+        project_dictionary = project_dictionary,
+        project_directory = project_directory
       )
 
     }
@@ -147,8 +125,6 @@ keep_cases <- function(data_df = NULL,
 
 
   if (project_dictionary$console_output_global) {
-
-    # TODO: update how these are formatted/what text accompanies
 
     # TODO: update function used to output messages... what's the recommended approach? message("") for text.. but for dataframes?
     message("Filtered cases:")
@@ -166,10 +142,14 @@ keep_cases <- function(data_df = NULL,
 
   }
 
-  return(invisible(
-    remove_cases %>%
-      dplyr::mutate(current_filtering = 1) %>%
-      dplyr::bind_rows(update_ob)
-  ))
+
+  return(invisible(keep_cases))
+
+  # Returning removed cases
+  # return(invisible(
+  #   remove_cases %>%
+  #     dplyr::mutate(current_filtering = 1) %>%
+  #     dplyr::bind_rows(update_ob)
+  # ))
 
 }
