@@ -22,7 +22,7 @@
 eval_map <- function(data_df = NULL,
                      from = NULL,
                      to = NULL,
-                     std_proc_na = as.numeric,
+                     std_proc_na = NULL,
                      highlight = FALSE, # similar with issue... this would initially apply the mapping and not the update items
                      issue = FALSE, # TODO: if you say issue = 1... start with just the mapping itself... but there should be a way to deal with to highlight the update artifact for issue tracking...
                      notes = NULL,
@@ -82,7 +82,7 @@ eval_map <- function(data_df = NULL,
 
     # create current mapping object
     new_map <- data_df %>%
-      dplyr::group_by(dplyr::across(dplyr::all_of(c(from, to)))) %>%
+      dplyr::group_by(dplyr::across(dplyr::all_of(c(to, from)))) %>%
       dplyr::count() # TODO: consider adding in % for each row
 
   } else {
@@ -208,7 +208,11 @@ eval_map <- function(data_df = NULL,
   # Send relevant output to console depending on below conditions
   if (project_dictionary$console_output_global) {
 
-    output_data_to_console(new_map, header_text = "Current Mapping:")
+    if (!is.null(std_proc_na))
+      output_data_to_console(new_map, header_text = "Current Mapping of Standard Processing NA Values:")
+    else
+      output_data_to_console(new_map, header_text = "Current Mapping:")
+
 
     output_data_to_console(update_ob, header_text = "Updated Mappings:")
 

@@ -1,6 +1,8 @@
 current_metadata_path: 'secure_data/2023_01_01/stp_ob.rds'
 compare_metadata_path: 'secure_data/2022_01_01/stp_ob.rds'
 
+current_report_path: 'secure_data/2023_01_01'
+
 save_metadata_global: TRUE
 compare_artifacts_global: FALSE
 

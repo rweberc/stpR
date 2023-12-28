@@ -8,7 +8,7 @@ eval_map(
   data_df = NULL,
   from = NULL,
   to = NULL,
-  std_proc_na = as.numeric,
+  std_proc_na = NULL,
   highlight = FALSE,
   issue = FALSE,
   notes = NULL,

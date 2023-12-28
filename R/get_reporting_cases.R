@@ -1,3 +1,8 @@
+#'
+#' @return
+#'
+#' @export
+#'
 get_reporting_cases = function(stp_ob,
                                limit_to_highlight = FALSE,
                                limit_to_issue = FALSE) {

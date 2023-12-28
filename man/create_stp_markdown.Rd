@@ -9,7 +9,8 @@ create_stp_markdown(
   include_update_object = FALSE,
   limit_to_highlight = FALSE,
   limit_to_issue = FALSE,
-  rmarkdown_path,
+  rmarkdown_path = NULL,
+  report_filename = "summary_report",
   project_dictionary = get_project_dictionary(),
   project_directory = here::here()
 )

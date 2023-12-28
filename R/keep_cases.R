@@ -124,8 +124,6 @@ keep_cases <- function(data_df = NULL,
 
     output_data_to_console(remove_cases, header_text = "Filtered cases:")
 
-    message("See returned object for further details")
-
   }
 
   if (return_only_filtered)

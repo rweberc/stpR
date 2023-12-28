@@ -9,7 +9,7 @@ log_item <- function(type,
                      item,
                      add_item = NULL, # This is to encompass the assert_distinct, assert_cases, assert_order output
                      priority = NULL,
-                     stp_id = 99999,
+                     stp_id = "99999",
                      project_dictionary = get_project_dictionary(),
                      project_directory = here::here()
                      )
@@ -25,7 +25,7 @@ log_item <- function(type,
 
 
   # Right now, will have global parameter for logging.  If TRUE, all instances will be logged (including duplicate items, etc.)
-  if (project_dictionary$save_metadata_items == TRUE &
+  if (project_dictionary$save_metadata_global == TRUE &
       project_dictionary$include_metadata_log_items == TRUE) {
 
     stp_ob$text_items = stp_ob$text_items %>%

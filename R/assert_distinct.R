@@ -6,7 +6,7 @@
 #'
 assert_distinct <- function(data_df,
                             group_by_vars = NULL,
-                            stp_id = 99999,
+                            stp_id = "99999",
                             project_dictionary = get_project_dictionary(),
                             project_directory = here::here()
                             )
@@ -49,7 +49,8 @@ assert_distinct <- function(data_df,
       output_data_to_console(unionDf, header_text = "Cases failing distinct:")
     }
 
-    error(error_print)
+    warning(error_print,
+            call. = FALSE)
   }
 
   return(invisible(unionDf))

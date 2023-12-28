@@ -32,7 +32,9 @@ update_stp_filtered <- function(df_name,
 
     if (project_dictionary$allow_updates_to_existing_individual_artifacts == FALSE) { # TODO: again, consider get() function
 
-      warning("Rows exist for ... but allow_updates_to_existing_individual_artifacts is set to FALSE.")
+      warning("Rows exist for ... but allow_updates_to_existing_individual_artifacts is set to FALSE.",
+              call. = FALSE)
+
       return() # TODO: likely need to update return statement
 
     } else {
@@ -60,8 +62,8 @@ update_stp_filtered <- function(df_name,
       report = ifelse(is.null(report), FALSE, report),
       perform_compare = ifelse(is.null(perform_compare), FALSE, perform_compare),
       compare_path = ifelse(is.null(compare_path), character(), compare_path),
-      ref_ob = ifelse(is.null(ref_ob), list(), ref_ob),
-      update_ob = ifelse(is.null(update_ob), list(), update_ob),
+      ref_ob = ifelse(is.null(ref_ob), list(), list(ref_ob)),
+      update_ob = ifelse(is.null(update_ob), list(), list(update_ob)),
       has_update_ob = has_update_ob,
       timestamp = lubridate::now()
     )

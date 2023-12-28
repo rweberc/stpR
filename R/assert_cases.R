@@ -5,7 +5,7 @@
 #' @export
 #'
 assert_cases <- function(logic, # expecting statement that evaluates to a TRUE/FALSE
-                         stp_id = 99999,
+                         stp_id = "99999",
                          project_dictionary = get_project_dictionary(),
                          project_directory = here::here()
                          )
@@ -15,7 +15,7 @@ assert_cases <- function(logic, # expecting statement that evaluates to a TRUE/F
 
   if (!logic) {
 
-    error_print <- "{paste0(stringr::str_trim(eval_logic_assert_string), collapse = ' ') }  FAILED."%>% glue::glue()
+    error_print <- "{paste0(stringr::str_trim(eval_logic_assert_string), collapse = ' ') }  -  FAILED."%>% glue::glue()
 
     if (project_dictionary$save_metadata_global) {
 
@@ -29,11 +29,9 @@ assert_cases <- function(logic, # expecting statement that evaluates to a TRUE/F
     }
 
     if (project_dictionary$console_output_global) {
-      warning(error_print)
+      warning(error_print,
+              call. = FALSE)
     }
 
-    # TODO: isn't there an error call?
-    # TODO: error call occurs regardless of whether console_output_global is true or not
-    error(error_print)
   }
 }
