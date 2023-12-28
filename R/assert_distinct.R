@@ -6,13 +6,11 @@
 #'
 assert_distinct <- function(data_df,
                             group_by_vars = NULL,
-                            stp_id = NULL, # TODO: is it a concern if id's in different stp_ob entities are the same
+                            stp_id = 99999,
                             project_dictionary = get_project_dictionary(),
                             project_directory = here::here()
                             )
 {
-
-  # TODO: input checks...
 
   # check first for any duplicated
   dupDf <- data_df[duplicated(data_df),]
@@ -36,7 +34,6 @@ assert_distinct <- function(data_df,
 
     error_print <- paste0("Assert distinct failed.")
 
-    ### TODO: save mult
     if (project_dictionary$save_metadata_global) {
 
       log_item(type = "ALERT",
@@ -49,13 +46,10 @@ assert_distinct <- function(data_df,
     }
 
     if (project_dictionary$console_output_global) {
-      print(multDf)
+      output_data_to_console(unionDf, header_text = "Cases failing distinct:")
     }
 
-    # TODO: isn't there an error call?
-    # TODO: error call occurs regardless of whether console_output_global is true or not
-    stop(error_print,
-         call. = FALSE)
+    error(error_print)
   }
 
   return(invisible(unionDf))

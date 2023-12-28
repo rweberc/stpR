@@ -47,9 +47,9 @@ update_stp_filtered <- function(df_name,
 
   if (existing_rows > 0) {
 
-    if (project_dictionary$allow_overwrite_artifacts_global == FALSE) { # TODO: again, consider get() function
+    if (project_dictionary$allow_updates_to_existing_individual_artifacts == FALSE) { # TODO: again, consider get() function
 
-      warning("Rows exist for ... but allow_overwrite_artifacts_global is set to FALSE.")
+      warning("Rows exist for ... but allow_updates_to_existing_individual_artifacts is set to FALSE.")
       return() # TODO: likely need to update return statement
 
     } else {

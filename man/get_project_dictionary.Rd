@@ -3,7 +3,7 @@
 \name{get_project_dictionary}
 \alias{get_project_dictionary}
 \title{First attempts to read the project_dictionary file from the current parent environment;
-failing that will attempt to read the file from a path, with the default path being at the root level of a project for a file specifically named stpr_project_dictionary}
+failing that will attempt to read the file from a path, with the default path being at the root level of a project for a file specifically named stp_project_dictionary}
 \usage{
 get_project_dictionary(
   filename = "project_dictionary.yaml",
@@ -12,5 +12,5 @@ get_project_dictionary(
 }
 \description{
 First attempts to read the project_dictionary file from the current parent environment;
-failing that will attempt to read the file from a path, with the default path being at the root level of a project for a file specifically named stpr_project_dictionary
+failing that will attempt to read the file from a path, with the default path being at the root level of a project for a file specifically named stp_project_dictionary
 }

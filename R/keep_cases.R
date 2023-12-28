@@ -16,6 +16,7 @@ keep_cases <- function(data_df = NULL,
                        save_artifact = TRUE, # create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)
                        report = TRUE,
                        perform_compare = TRUE, # case where you just want to highlight something, but didn't want to "enforce" any particular relationship
+                       return_only_filtered = FALSE,
                        project_dictionary = get_project_dictionary(),
                        project_directory = here::here())
 {
@@ -31,15 +32,13 @@ keep_cases <- function(data_df = NULL,
   compare_filter = NULL
 
   filter_new = NULL
-  filter_missing = NULL # Note: don't track 'filter_changed' (that is where the non_id_var values changed for a given filter id set)
+  filter_missing = NULL # Note: utility doesn't track 'filter_changed' (that is where the non_id_var values changed for a given filter id set)
   update_ob = NULL
 
   # TODO: what if id_vars and non_id_vars do not include group_at_vars... will be included if df already grouped, right?  ... add something explicit?
 
   data_df <- data_df  %>%
     dplyr::group_by_at(c(group_by_vars)) # TODO: check that if no group_by_vars are provided, does this ungroup()... does it throw an error?
-
-
 
   # Get cases to filter
   remove_cases <- data_df %>%
@@ -56,7 +55,7 @@ keep_cases <- function(data_df = NULL,
     dplyr::ungroup() # TODO: might not be expected that a grouping is removed...
 
 
-  ## If writing or comparing, determined document id (only need if going to save out)
+  ## If writing or comparing, determine document id (only need if going to save out)
   if (save_artifact) {
 
     if (project_dictionary$compare_artifacts_global & perform_compare) {
@@ -100,9 +99,6 @@ keep_cases <- function(data_df = NULL,
     #   Save out mapping, update artifact, and update issues
     if (project_dictionary$save_metadata_global) {
 
-      # Need to send project dictionary... need to send compare? ... only check if the remove_cases is not null?
-      # Need to send the notes
-
       update_stp_filtered(
         df_name = df_name,
         ref_ob = remove_cases,
@@ -126,30 +122,15 @@ keep_cases <- function(data_df = NULL,
 
   if (project_dictionary$console_output_global) {
 
-    # TODO: update function used to output messages... what's the recommended approach? message("") for text.. but for dataframes?
-    message("Filtered cases:")
-    print(remove_cases)
-
-    if (!is.null(update_ob)){
-
-      if (nrow(update_ob) > 0) {
-        message("Updated filtered:")
-        print(update_ob)
-      }
-    }
+    output_data_to_console(remove_cases, header_text = "Filtered cases:")
 
     message("See returned object for further details")
 
   }
 
-
-  return(invisible(keep_cases))
-
-  # Returning removed cases
-  # return(invisible(
-  #   remove_cases %>%
-  #     dplyr::mutate(current_filtering = 1) %>%
-  #     dplyr::bind_rows(update_ob)
-  # ))
+  if (return_only_filtered)
+    return(invisible(remove_cases))
+  else
+    return(invisible(keep_cases))
 
 }

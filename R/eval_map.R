@@ -1,7 +1,7 @@
 #' Description
 #'
 #'
-#' @param data_df
+#' @param data_df a dataframe that contains the underlying data to be evaluated
 #' @param from
 #' @param to
 #' @param std_proc_na
@@ -12,7 +12,7 @@
 #' @param save_artifact
 #' @param report
 #' @param perform_compare
-#' @param stpr_ob
+#' @param stp_ob
 #'
 #' @return
 #'
@@ -27,7 +27,7 @@ eval_map <- function(data_df = NULL,
                      issue = FALSE, # TODO: if you say issue = 1... start with just the mapping itself... but there should be a way to deal with to highlight the update artifact for issue tracking...
                      notes = NULL,
                      stp_id = NULL,
-                     save_artifact = TRUE, # create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)
+                     save_artifact = TRUE, # only false if you just wanted to use this function to do the count() type check with benefit of console output control
                      report = TRUE,
                      perform_compare = TRUE, # case where you just want to highlight something, but didn't want to "enforce" any particular relationship
                      project_dictionary = get_project_dictionary(),
@@ -61,6 +61,7 @@ eval_map <- function(data_df = NULL,
 
 
   # This is the default cases where the from and to columns are used to define the dataframe being evaluated
+  # Summary == TRUE when this function, eval_map(), is being called from eval_summary()
   if (!summary) {
     df_name = deparse(substitute(data_df)) # TODO: likely need checks added to this kind of call - consider removing, since may be dependent on type of data frame passed in
 
@@ -86,6 +87,7 @@ eval_map <- function(data_df = NULL,
 
   } else {
 
+    # To set up variables for the scenario when eval_map() is being called from eval_summary() (i.e., when summary = TRUE)
     df_name = NULL
 
     var_list = names(data_df)
@@ -95,7 +97,7 @@ eval_map <- function(data_df = NULL,
 
   }
 
-  ## If writing or comparing, determined document id (only need if going to save out)
+  ## If writing or comparing, determine document id (only need if going to save out)
   if (save_artifact) {
 
     if (is.null(stp_id)) {
@@ -116,21 +118,10 @@ eval_map <- function(data_df = NULL,
         stop("Cannot perform compare of data artifacts when no compare object could be found.") # could put in details of path, etc.)
         # TODO: if true, update to a break out of compare enclosure and add warning
 
-      # TODO: figure in a mapping option for use against old names fields in previous data (that object would say specify, if comparing this date vs that date for x field, use this mapping, else, look for the current mapping)
-      # TODO: possibly have that mapping say, ignore comparing this for a particular date...
-
-      # get compare mapping
+      # Get compare mapping
       compare_map = stp_comp_ob$mapping_items %>%
         dplyr::filter(stp_id == stp_id) %>%
         dplyr::pull(ref_ob) # todo... have to update this syntax... [[.]]?
-
-      # TODO: confirm there only one such of these items... confirm existence
-      # TODO: compare the column field names... might need to include this in the optional traversing name updates
-
-      # TODO: have warning about the same columns existing in previous and current
-      # TODO: have warning about classes of columns being the same (add in check that columns have to be atomic type... not checking values of lists, etc.)
-
-      # TODO: decide how to deal with the warning related to many-to-many joins.... just keep it?... always avoid it (since you're outputting the results?)
 
       ## [ new ]
       map_new <- new_map %>%
@@ -189,12 +180,10 @@ eval_map <- function(data_df = NULL,
     }
 
 
-    #   - save out mapping, update artifact, and update issues
+    # Save out mapping, update artifact, and update issues (when relevant based on below conditions)
     if (project_dictionary$save_metadata_global) {
 
-      # Need to send project dictionary... need to send compare? ... only check if the update_ob is not null?
-      # Need to send the notes
-
+      # TODO: can update to remove several of the unnecessary variables sent here (perform_compare, etc.)
       update_stp_mappings(
         df_name = df_name,
         ref_ob = new_map,
@@ -216,25 +205,12 @@ eval_map <- function(data_df = NULL,
   }
 
 
+  # Send relevant output to console depending on below conditions
   if (project_dictionary$console_output_global) {
 
-    # TODO: update how these are formatted/what text accompanies
+    output_data_to_console(new_map, header_text = "Current Mapping:")
 
-    # TODO: update function used to output messages... what's the recommended approach? message("") for text.. but for dataframes?
-    message("Current Mapping:")
-    print(new_map)
-
-    if (!is.null(update_ob)){
-
-      if (nrow(update_ob) > 0) {
-        message("Updated Mappings:") # TODO: add exclusion statement if std_proc_na is not null
-        print(update_ob)
-      }
-    }
-
-    if (nrow(new_map) > 9 |
-        (!is.null(update_ob) && nrow(update_ob) > 0))
-      message("See returned object for further details")
+    output_data_to_console(update_ob, header_text = "Updated Mappings:")
 
   }
 
@@ -243,8 +219,6 @@ eval_map <- function(data_df = NULL,
       dplyr::mutate(current_mapping = 1) %>%
       dplyr::bind_rows(update_ob)
   ))
-
-  # TODO: return new mapping and updated mappings in a single object...
 
 }
 

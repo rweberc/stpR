@@ -5,7 +5,7 @@
 \title{Description}
 \usage{
 eval_summary(
-  summary_df,
+  summary_df = NULL,
   key,
   highlight = FALSE,
   issue = FALSE,
@@ -19,7 +19,11 @@ eval_summary(
 )
 }
 \arguments{
-\item{stpr_ob}{}
+\item{save_artifact}{create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)}
+
+\item{perform_compare}{case where you just want to highlight something, but didn't want to "enforce" any particular relationship}
+
+\item{stp_ob}{}
 }
 \description{
 Description

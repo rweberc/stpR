@@ -18,6 +18,7 @@ Suggests:
 Config/testthat/edition: 2
 Imports: 
     DT,
+    knitr,
     magrittr,
     rmarkdown,
     stringr,

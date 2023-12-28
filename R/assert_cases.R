@@ -5,24 +5,18 @@
 #' @export
 #'
 assert_cases <- function(logic, # expecting statement that evaluates to a TRUE/FALSE
-                         stp_id = NULL, # TODO: is it a concern if id's in different stp_ob entities are the same
+                         stp_id = 99999,
                          project_dictionary = get_project_dictionary(),
                          project_directory = here::here()
                          )
 {
-  # TODO: input checks...
-  # TODO: does this really need a stp_id?
 
-  # eval_logic_assert = eval(parse(text = logic))
-  # eval_logic_assert_string = as.character(eval(parse(text = logic)))
+  eval_logic_assert_string = deparse(substitute(logic)) # TODO: there are probably a lot of cases here to look out for when trying to turn this into a character
 
-  eval_logic_assert_string = deparse(substitute(logic))
+  if (!logic) {
 
-  if (!logic) { # TODO: in this case, I think we don't need to expect a string.. so this should be updated to just eval()?
+    error_print <- "{paste0(stringr::str_trim(eval_logic_assert_string), collapse = ' ') }  FAILED."%>% glue::glue()
 
-    error_print <- "{paste0(stringr::str_trim(eval_logic_assert_string), collapse = ' ') }  FAILED."%>% glue::glue() # TODO: there are probably a lot of cases here to look out for when trying to turn this into a character
-
-    ### TODO: save mult
     if (project_dictionary$save_metadata_global) {
 
       log_item(type = "ALERT",
@@ -35,15 +29,11 @@ assert_cases <- function(logic, # expecting statement that evaluates to a TRUE/F
     }
 
     if (project_dictionary$console_output_global) {
-      print(error_print)
+      warning(error_print)
     }
 
     # TODO: isn't there an error call?
     # TODO: error call occurs regardless of whether console_output_global is true or not
-    stop(error_print,
-         call. = FALSE)
+    error(error_print)
   }
-
-  # return(invisible(eval_logic_assert)) # return cases that fail the assert...
-
 }

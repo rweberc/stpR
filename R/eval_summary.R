@@ -9,10 +9,10 @@
 #' @param issue
 #' @param id
 #' @param notes
-#' @param save_artifact
+#' @param save_artifact # create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)
 #' @param report
-#' @param perform_compare
-#' @param stpr_ob
+#' @param perform_compare # case where you just want to highlight something, but didn't want to "enforce" any particular relationship
+#' @param stp_ob
 #'
 #' @return
 #'
@@ -22,13 +22,13 @@
 
 eval_summary <- function(summary_df = NULL,
                          key,
-                         highlight = FALSE, # similar with issue... this would initially apply the mapping and not the update items
-                         issue = FALSE, # TODO: if you say issue = 1... start with just the mapping itself... but there should be a way to deal with to highlight the update artifact for issue tracking...
+                         highlight = FALSE,
+                         issue = FALSE,
                          notes = NULL,
                          stp_id,
-                         save_artifact = TRUE, # create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)
+                         save_artifact = TRUE,
                          report = TRUE,
-                         perform_compare = TRUE, # case where you just want to highlight something, but didn't want to "enforce" any particular relationship
+                         perform_compare = TRUE,
                          project_dictionary = get_project_dictionary(),
                          project_directory = here::here()) {
 

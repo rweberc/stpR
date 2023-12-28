@@ -7,18 +7,13 @@ get_stp_object <- function(project_dictionary = get_project_dictionary(),
                            dir = here::here(),
                            file_type = "current") {
 
-  # TODO: if not available, warning?  add in suggestion for creating... populate with suggested path?
-
-  # TODO: add in additional validation for files found or not...
-
-  # TODO: consider the cases where you would and wouldn't want to handle the items not being there and what type of response should be given in each of these cases.
 
   if (file_type == "current")
     path_to_read = file.path(dir, project_dictionary$current_metadata_path)
   else if (file_type == "compare")
     path_to_read = file.path(dir, project_dictionary$compare_metadata_path)
   else
-    stop("Error: file_type '{file_type}' not valid." %>% glue::glue())
+    stop("Error: file_type '{file_type}' not valid for file_type argument." %>% glue::glue())
 
   stp_object = NULL
 

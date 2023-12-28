@@ -3,8 +3,10 @@ compare_metadata_path: 'secure_data/2022_01_01/stp_ob.rds'
 
 save_metadata_global: TRUE
 compare_artifacts_global: FALSE
+
 console_output_global: TRUE
-allow_overwrite_artifacts_global: TRUE
+allow_updates_to_existing_individual_artifacts: TRUE
+include_metadata_log_items: TRUE
 
 
 

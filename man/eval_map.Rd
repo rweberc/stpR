@@ -22,7 +22,9 @@ eval_map(
 )
 }
 \arguments{
-\item{stpr_ob}{}
+\item{data_df}{a dataframe that contains the underlying data to be evaluated}
+
+\item{stp_ob}{}
 }
 \description{
 Description

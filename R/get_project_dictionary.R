@@ -1,5 +1,5 @@
 #' First attempts to read the project_dictionary file from the current parent environment;
-#' failing that will attempt to read the file from a path, with the default path being at the root level of a project for a file specifically named stpr_project_dictionary
+#' failing that will attempt to read the file from a path, with the default path being at the root level of a project for a file specifically named stp_project_dictionary
 #'
 #'
 #' @return
