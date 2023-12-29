@@ -2,3 +2,6 @@ url: https://rweberc.github.io/stpR/
 template:
   bootstrap: 5
 
+authors:
+  Ryan C Weber:
+    href: "http://github.com/rweberc"
