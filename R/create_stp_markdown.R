@@ -92,17 +92,17 @@ reporting_object <- get_reporting_cases(stp_object,
     item_reference_string <- ""
 
     reporting_object_row <- reporting_object %>%
-      slice(i)
+      dplyr::slice(i)
 
     # TODO: need to add in value checks for null items
     item_header <- reporting_object_row %>%
       pull(stp_id)
 
     item_description <- reporting_object_row %>%
-      pull(notes)
+      dplyr::pull(notes)
 
     has_update_ob <- reporting_object_row %>%
-      pull(has_update_ob)
+      dplyr::pull(has_update_ob)
 
 
     # item header text

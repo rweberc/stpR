@@ -28,11 +28,7 @@
 #' # Called by assert_cases.R function
 #' log_item(type = "ALERT",
 #'     item = eval_logic_assert_string,
-#'     add_item = NULL,
 #'     priority = "1",
-#'     stp_id = stp_id,
-#'     project_dictionary = project_dictionary,
-#'     project_directory = project_directory
 #'  )
 #' }
 log_item <- function(type,

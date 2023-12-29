@@ -1,4 +1,6 @@
-#' Primary setup utility for stpR.  This function is used to create the initial metadata objects that are used by the other setup utilities in stpR.
+#' Primary setup utility for stpR.
+#'
+#' This function is used to create the initial metadata objects that are used by the other setup utilities in stpR.
 #' Processes stp_ob artifacts for multiple scenarios:
 #'
 #'  - Initial processing of raw data for both categorical and "continuous" fields (depending on whether std_proc_na is NULL)
@@ -29,18 +31,18 @@
 #' \donttest{
 #'   # mapping with issue
 #'   eval_map(
-#'     data_df = test_tbl,
+#'     data_df = qa_tbl,
 #'     from = "TRT_RAW",
 #'     to = "trt",
 #'     notes = "Note multiple raw processed values associated with each treatment type"
 #'   )
 #'
-#'   test_tbl$age <- as.numeric(test_tbl$AGE_RAW)
-#'   test_tbl$age[test_tbl$AGE_RAW == "twenty"] <- 20
+#'   qa_tbl$age <- as.numeric(qa_tbl$AGE_RAW)
+#'   qa_tbl$age[qa_tbl$AGE_RAW == "twenty"] <- 20
 #'
 #'   # 'continuous' field with issue
 #'   eval_map(
-#'     data_df = test_tbl,
+#'     data_df = qa_tbl,
 #'     from = "AGE_RAW",
 #'     to = "age",
 #'     std_proc_na = as.numeric,

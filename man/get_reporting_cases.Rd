@@ -4,10 +4,14 @@
 \alias{get_reporting_cases}
 \title{Return cases relevant for reporting}
 \usage{
-get_reporting_cases(stp_ob, limit_to_highlight = FALSE, limit_to_issue = FALSE)
+get_reporting_cases(
+  stp_ob = get_stp_object(),
+  limit_to_highlight = FALSE,
+  limit_to_issue = FALSE
+)
 }
 \arguments{
-\item{stp_ob}{stpR artifact object}
+\item{stp_ob}{stpR artifact object. Default is the current state of the stpR object.}
 
 \item{limit_to_highlight}{boolean to limit returned values to those that are highlighted}
 
@@ -23,7 +27,7 @@ In the future, this function will also allow returning "non-report" items that h
 \examples{
 \donttest{
 
-  get_reporting_cases(stp_object)
+  get_reporting_cases()
 
 }
 }

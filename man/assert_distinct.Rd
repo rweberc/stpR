@@ -32,9 +32,9 @@ If \code{throw_assert_errors} is \code{FALSE} and \code{console_output_global} i
 }
 \examples{
 \donttest{
-temp_dup_tbl <- test_tbl \%>\%
-  bind_rows(test_tbl \%>\%
-            slice(1))
+temp_dup_tbl <- qa_tbl \%>\%
+  dplyr::bind_rows(qa_tbl \%>\%
+            dplyr::slice(1))
 
 assert_distinct(
   data_df = temp_dup_tbl,

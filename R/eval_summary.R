@@ -1,3 +1,5 @@
+#' Create artifact for summary cases.
+#'
 #' For use with stpR setup cases where a pre-defined mapping of values is of interest to be tracked, but where variables are strictly associated in a `from` and `to` relationship.  Most likely to be utilized
 #'
 #' This function calls `eval_map()` with the `summary` parameter set to TRUE.  See `eval_map()` for additional details.
@@ -21,7 +23,7 @@
 #' @examples
 #' \donttest{
 #'   eval_summary(
-#'     summary_df = count(test_tbl, approach, asa),
+#'     summary_df = count(qa_tbl, approach, asa),
 #'     key = "proc_name",
 #'     notes = "summary proc, ASA notes",
 #'     stp_id = "comp_approach_asa"

@@ -32,7 +32,7 @@ If \code{throw_assert_errors} is \code{FALSE} and \code{console_output_global} i
 
 assert_cases(
   logic = qa_tbl \%>\%
-    filter(trt == "Drug A" & stage == "T3") \%>\%
+    dplyr::filter(trt == "Drug A" & stage == "T3") \%>\%
     nrow() == 0,
   stp_id = 'assert_trt_vs_stage'
 )

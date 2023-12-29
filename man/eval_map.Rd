@@ -2,8 +2,7 @@
 % Please edit documentation in R/eval_map.R
 \name{eval_map}
 \alias{eval_map}
-\title{Primary setup utility for stpR.  This function is used to create the initial metadata objects that are used by the other setup utilities in stpR.
-Processes stp_ob artifacts for multiple scenarios:}
+\title{Primary setup utility for stpR.}
 \usage{
 eval_map(
   data_df = NULL,
@@ -55,6 +54,10 @@ eval_map(
 a data frame with the current mapping and any updates to the mapping, if relevant.
 }
 \description{
+This function is used to create the initial metadata objects that are used by the other setup utilities in stpR.
+Processes stp_ob artifacts for multiple scenarios:
+}
+\details{
 \itemize{
 \item Initial processing of raw data for both categorical and "continuous" fields (depending on whether std_proc_na is NULL)
 \item General summary of value combinations for several columns: As a utility, \code{eval_summary()} also utilizes the functionality of this utility, as well: When \code{summary = TRUE}, the \code{data_df} is assumed to be a summary table rather than a processing of \code{from} and \code{to} values as is commonly the case for the use of eval_map().
@@ -66,18 +69,18 @@ a data frame with the current mapping and any updates to the mapping, if relevan
 \donttest{
   # mapping with issue
   eval_map(
-    data_df = test_tbl,
+    data_df = qa_tbl,
     from = "TRT_RAW",
     to = "trt",
     notes = "Note multiple raw processed values associated with each treatment type"
   )
 
-  test_tbl$age <- as.numeric(test_tbl$AGE_RAW)
-  test_tbl$age[test_tbl$AGE_RAW == "twenty"] <- 20
+  qa_tbl$age <- as.numeric(qa_tbl$AGE_RAW)
+  qa_tbl$age[qa_tbl$AGE_RAW == "twenty"] <- 20
 
   # 'continuous' field with issue
   eval_map(
-    data_df = test_tbl,
+    data_df = qa_tbl,
     from = "AGE_RAW",
     to = "age",
     std_proc_na = as.numeric,

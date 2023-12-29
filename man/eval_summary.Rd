@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_summary.R
 \name{eval_summary}
 \alias{eval_summary}
-\title{For use with stpR setup cases where a pre-defined mapping of values is of interest to be tracked, but where variables are strictly associated in a \code{from} and \code{to} relationship.  Most likely to be utilized}
+\title{Create artifact for summary cases.}
 \usage{
 eval_summary(
   summary_df = NULL,
@@ -45,12 +45,15 @@ eval_summary(
 a data frame with the current mapping and any updates to the mapping, if relevant.
 }
 \description{
+For use with stpR setup cases where a pre-defined mapping of values is of interest to be tracked, but where variables are strictly associated in a \code{from} and \code{to} relationship.  Most likely to be utilized
+}
+\details{
 This function calls \code{eval_map()} with the \code{summary} parameter set to TRUE.  See \code{eval_map()} for additional details.
 }
 \examples{
 \donttest{
   eval_summary(
-    summary_df = count(test_tbl, approach, asa),
+    summary_df = count(qa_tbl, approach, asa),
     key = "proc_name",
     notes = "summary proc, ASA notes",
     stp_id = "comp_approach_asa"
