@@ -16,19 +16,19 @@ eval_map(
   data_df = test_tbl,
   from = "TRT_RAW",
   to = "trt",
-  notes = "trt notes..."
+  notes = "Note multiple raw processed values associated with each treatment type"
 )
 
 test_tbl$age <- as.numeric(test_tbl$AGE_RAW)
 test_tbl$age[test_tbl$AGE_RAW == "twenty"] <- 20
 
-# continuous with issue
+# 'continuous' field with issue
 eval_map(
   data_df = test_tbl,
   from = "AGE_RAW",
   to = "age",
   std_proc_na = as.numeric,
-  notes = "age notes..."
+  notes = "Note processing of value of 'twenty' from AGE_RAW"
 )
 
 eval_summary(
@@ -69,4 +69,20 @@ assert_distinct(
 
   create_stp_markdown()
 
-
+#' header
+#'
+#' desc
+#'
+#' details
+#'
+#' @param xyz abc
+#'
+#' @return
+#'
+#' @export
+#'
+#' @examples
+#' \donttest{
+#'
+#'
+#' }

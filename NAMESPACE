@@ -3,6 +3,7 @@
 export("%>%")
 export(assert_cases)
 export(assert_distinct)
+export(assert_order)
 export(create_stp_markdown)
 export(create_stp_ob)
 export(eval_map)

@@ -1,22 +1,49 @@
+#' Utility to create an Rmarkdown file that can be used to generate a report of the current state of the data
 #'
-#' User is calling this function create rmarkdown
+#' Data summary created according to the current state of the stp_object.  The stp_object is read from the `current_metadata_path` in the project_dictionary.
+#' The stp_object is then filtered according to the `limit_to_highlight` and `limit_to_issue` arguments, depending on what is of interest for the current report.
+#' The output is also filtered to include the reference and update objects if `include_reference_object` and `include_update_object` are set to TRUE.
+#' Only stp_ids that have a report = TRUE are included in the output.
+#'
+#' The output is a .rmd file that can be rendered to html.  If `render_markdown` is set to TRUE, an html markdown will also be rendered.
+#' If rmarkdown_path is NULL, the output file is saved to the `current_report_path` from the project_dictionary.
+#'
+#'
+#' @param include_reference_object If TRUE, the reference object is included in the output.  Default is TRUE.  The reference object is the object represents the current state of the data as output by the last run of the stpR setup function, such as `eval_map()`, `eval_summary()`, `assert_distinct()`, etc.
+#' @param include_update_object If TRUE, the update object is included in the output. Default is FALSE. the update object represents differences recorded between the current state of the stp_object and the comparison object (`compare_metadata_path` in the project_dictionary), as determined by the last run of the stpR setup functions on the data setup.
+#' @param limit_to_highlight If TRUE, the output is filtered to only include stp_ids that have highlight = TRUE. Default is FALSE.
+#' @param limit_to_issue If TRUE, the output is filtered to only include stp_ids that have issue = TRUE. Default is FALSE.
+#' @param rmarkdown_path The path to save the output rmarkdown file. If NULL, the output file is saved to the `current_report_path` from the project_dictionary.
+#' @param report_filename The name of the output file, without the extension. Default is "summary_report".
+#' @param render_markdown If TRUE, the output rmarkdown file is rendered to html in the same path as the .rmd file is output.
+#' @param project_dictionary The project_dictionary object, which by default is output by the `get_project_dictionary()` function.
+#' @param project_directory The project_directory object, which by default is output by the `here::here()` function.
 #'
 #' @export
+#'
+#' @examples
+#' \donttest{
+#'
+#' create_stp_markdown()
+#'
+#' }
+#'
 #'
 create_stp_markdown <- function(include_reference_object = TRUE,
                                 include_update_object = FALSE,
                                 limit_to_highlight = FALSE,
                                 limit_to_issue = FALSE,
-                                rmarkdown_path = NULL,  # if null, stored in same directory as current file
+                                rmarkdown_path = NULL,
                                 report_filename = "summary_report",
+                                render_markdown = TRUE,
                                 project_dictionary = get_project_dictionary(),
                                 project_directory = here::here()) {
 
+  # Check rmarkdown_path
+  # Check current_report_path..
 
   # Create output file path:
   if (is.null(rmarkdown_path)) {
-
-    # Regex to remove everything after the last slash from the variable project_dictionary$current_metadata_path
 
     rmarkdown_path = file.path(project_directory,
                                project_dictionary$current_report_path,
@@ -166,6 +193,10 @@ reporting_object <- get_reporting_cases(stp_object,
 
   # cat the file to the rmarkdown_path
   cat(iterate_reference_strings, file = rmarkdown_path)
+
+  if (render_markdown) {
+    rmarkdown::render(rmarkdown_path)
+  }
 
 }
 

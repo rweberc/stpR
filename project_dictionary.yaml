@@ -9,6 +9,7 @@ compare_artifacts_global: FALSE
 console_output_global: TRUE
 allow_updates_to_existing_individual_artifacts: TRUE
 include_metadata_log_items: TRUE
+throw_assert_errors: FALSE
 
 
 

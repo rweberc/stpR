@@ -2,13 +2,10 @@
 % Please edit documentation in R/addins.R
 \name{exec_view}
 \alias{exec_view}
-\title{exec_view}
+\title{Execute and view highlighted text.  Wrapper for View().}
 \usage{
 exec_view()
 }
 \description{
-Execute and view highlighted text.  Wrapper for View().
-}
-\details{
 rstudio.prefs::use_rstudio_keyboard_shortcut("Ctrl+Shift+W" = "AmplioHelpers::exec_view")
 }

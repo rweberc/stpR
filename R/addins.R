@@ -1,5 +1,3 @@
-#' exec_view
-#'
 #' Execute and view highlighted text.  Wrapper for View().
 #'
 #' rstudio.prefs::use_rstudio_keyboard_shortcut("Ctrl+Shift+W" = "AmplioHelpers::exec_view")

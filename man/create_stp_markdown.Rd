@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_stp_markdown.R
 \name{create_stp_markdown}
 \alias{create_stp_markdown}
-\title{User is calling this function create rmarkdown}
+\title{Utility to create an Rmarkdown file that can be used to generate a report of the current state of the data}
 \usage{
 create_stp_markdown(
   include_reference_object = TRUE,
@@ -11,10 +11,46 @@ create_stp_markdown(
   limit_to_issue = FALSE,
   rmarkdown_path = NULL,
   report_filename = "summary_report",
+  render_markdown = TRUE,
   project_dictionary = get_project_dictionary(),
   project_directory = here::here()
 )
 }
+\arguments{
+\item{include_reference_object}{If TRUE, the reference object is included in the output.  Default is TRUE.  The reference object is the object represents the current state of the data as output by the last run of the stpR setup function, such as \code{eval_map()}, \code{eval_summary()}, \code{assert_distinct()}, etc.}
+
+\item{include_update_object}{If TRUE, the update object is included in the output. Default is FALSE. the update object represents differences recorded between the current state of the stp_object and the comparison object (\code{compare_metadata_path} in the project_dictionary), as determined by the last run of the stpR setup functions on the data setup.}
+
+\item{limit_to_highlight}{If TRUE, the output is filtered to only include stp_ids that have highlight = TRUE. Default is FALSE.}
+
+\item{limit_to_issue}{If TRUE, the output is filtered to only include stp_ids that have issue = TRUE. Default is FALSE.}
+
+\item{rmarkdown_path}{The path to save the output rmarkdown file. If NULL, the output file is saved to the \code{current_report_path} from the project_dictionary.}
+
+\item{report_filename}{The name of the output file, without the extension. Default is "summary_report".}
+
+\item{render_markdown}{If TRUE, the output rmarkdown file is rendered to html in the same path as the .rmd file is output.}
+
+\item{project_dictionary}{The project_dictionary object, which by default is output by the \code{get_project_dictionary()} function.}
+
+\item{project_directory}{The project_directory object, which by default is output by the \code{here::here()} function.}
+}
 \description{
-User is calling this function create rmarkdown
+Data summary created according to the current state of the stp_object.  The stp_object is read from the \code{current_metadata_path} in the project_dictionary.
+The stp_object is then filtered according to the \code{limit_to_highlight} and \code{limit_to_issue} arguments, depending on what is of interest for the current report.
+The output is also filtered to include the reference and update objects if \code{include_reference_object} and \code{include_update_object} are set to TRUE.
+Only stp_ids that have a report = TRUE are included in the output.
+}
+\details{
+The output is a .rmd file that can be rendered to html.  If \code{render_markdown} is set to TRUE, an html markdown will also be rendered.
+If rmarkdown_path is NULL, the output file is saved to the \code{current_report_path} from the project_dictionary.
+}
+\examples{
+\donttest{
+
+create_stp_markdown()
+
+}
+
+
 }

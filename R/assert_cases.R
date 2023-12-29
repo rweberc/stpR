@@ -1,9 +1,27 @@
-
-
-
+#' Integrates logical statement asserts into the stpR object.
+#'
+#' Asserts that a statement is TRUE. If not, prints a warning and logs an alert.
+#'
+#' If `throw_assert_errors` in the project_dictionary is `TRUE`, then an error is thrown instead of a warning.
+#' If `throw_assert_errors` is `FALSE` and `console_output_global` is `TRUE` in the project_dictionary, then a warning is printed to the console.
+#'
+#' @param logic Statement that evaluates to a TRUE/FALSE.
+#' @param stp_id Id of the stp_ob entity. Defaults to "99999".
+#' @param project_dictionary Project dictionary. Defaults to the global dictionary.
+#' @param project_directory Project directory. Defaults to the global directory based on `here::here()` call.
 #'
 #' @export
 #'
+#' @examples
+#' \donttest{
+#'
+#' assert_cases(
+#'   logic = qa_tbl %>%
+#'     filter(trt == "Drug A" & stage == "T3") %>%
+#'     nrow() == 0,
+#'   stp_id = 'assert_trt_vs_stage'
+#' )
+#' }
 assert_cases <- function(logic, # expecting statement that evaluates to a TRUE/FALSE
                          stp_id = "99999",
                          project_dictionary = get_project_dictionary(),
@@ -28,7 +46,10 @@ assert_cases <- function(logic, # expecting statement that evaluates to a TRUE/F
                project_directory = project_directory)
     }
 
-    if (project_dictionary$console_output_global) {
+    if (project_dictionary$throw_assert_errors) {
+      stop(error_print,
+           call. = FALSE)
+    } else if (project_dictionary$console_output_global) {
       warning(error_print,
               call. = FALSE)
     }

@@ -1,9 +1,22 @@
-
+#' Utility to create a new stp_ob object.
 #'
-#' @return
+#' Usually run at the beginning of processing a new data set.
+#'
+#' @param save_to_path If NULL, will attempt to save to the current_metadata_path in the project_dictionary.
+#' @param reset If TRUE, will overwrite any existing stp_ob object at the save_to_path.
+#' @param dir The directory to save the stp_ob object to, which by default is determined by the `here::here()` function.
+#' @param project_dictionary The project_dictionary object, which by default is determined by the `get_project_dictionary()` function.
+#'
+#' @return stp_ob A list object that documents the current state of the project for evaluation and reporting.
 #'
 #' @export
 #'
+#' @examples
+#' \donttest{
+#'
+#' create_stp_ob(reset = TRUE)
+#'
+#' }
 #'
 # TODO: take in path to attempt to read object
 # TODO: add timestamps
@@ -13,8 +26,6 @@ create_stp_ob <- function(save_to_path = NULL,
                           project_dictionary = get_project_dictionary()) {
 
   mapping_items = tibble::tibble(
-    # field_type = character(), # expect: cat(egorical) or cont(inuous)
-    # todo: consider saving out the std_process field
     stp_id = character(),
     df_name = character(),
     from = character(),
@@ -52,7 +63,7 @@ create_stp_ob <- function(save_to_path = NULL,
     timestamp = as.POSIXct(character()) # todo check type
   )
 
-  # case_items...
+  # TODO: will add in replace case items here
 
   text_items = tibble::tibble(
     type = character(), # comment, todo, alert # TODO: consier if "errors/alerts" should be in a separate data object...
@@ -71,9 +82,9 @@ create_stp_ob <- function(save_to_path = NULL,
 
   # TODO: add in dir.exists check...
 
-  # TODO: consider incorporating project_dictionary globals:
-  # save_metadata_gobal
+  # TODO: Incorporate project_dictionary globals:
   # allow_overwrite_artifacts_global
+  # save_metadata_gobal
 
   # If save_to_path is NULL, try to get the write path from the current_metadata_path
   if (is.null(save_to_path)) {
@@ -91,8 +102,6 @@ create_stp_ob <- function(save_to_path = NULL,
     saveRDS(stp_ob, save_to_path)
     usethis::ui_done("New stp_ob created at: '{save_to_path}'")
   }
-
-
 
   return(invisible(stp_ob))
 

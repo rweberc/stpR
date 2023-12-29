@@ -1,23 +1,53 @@
-#' Description
+#' Primary setup utility for stpR.  This function is used to create the initial metadata objects that are used by the other setup utilities in stpR.
+#' Processes stp_ob artifacts for multiple scenarios:
 #'
+#'  - Initial processing of raw data for both categorical and "continuous" fields (depending on whether std_proc_na is NULL)
+#'  - General summary of value combinations for several columns: As a utility, `eval_summary()` also utilizes the functionality of this utility, as well: When `summary = TRUE`, the `data_df` is assumed to be a summary table rather than a processing of `from` and `to` values as is commonly the case for the use of eval_map().
+#'  - Comparison of current data against previous data artifacts
+#'  - Additional creation of tages of items to note as "issues" or "highlights" for reporting of the current state of the data
 #'
-#' @param data_df a dataframe that contains the underlying data to be evaluated
-#' @param from
-#' @param to
-#' @param std_proc_na
-#' @param highlight
-#' @param issue
-#' @param id
-#' @param notes
-#' @param save_artifact
-#' @param report
-#' @param perform_compare
-#' @param stp_ob
+#' @param data_df The data frame to be evaluated.
+#' @param from string value of the column(s) in the data frame that represent the columns being processed in the current data set
+#' @param to string value of the column(s) in the data frame that represent the columns being processed in the current data set.
+#' @param std_proc_na A function that will be applied to the `from` column(s) to determine which values should be considered "standard processing" NA values.  This field is used in cases when processing values such as numbers, where it's not necessary to know all the "typically" processed values, but it is helpful to know the values that aren't readily processed by this standard processing as well as how they are handled in the current data set.
+#' @param highlight A boolean tag to denote whether this processing is of interest for highlighting in the reporting of the current state of the data.  Generally, this would be a type of mapping or field processing that would be of interest to routinely review for each data set processing.
+#' @param issue A boolean tag to denote whether this processing is of interest for noting for inspection as an issue in the reporting of the current state of the data.
+#' @param notes A string value to be included in the reporting of the current state of the data.
+#' @param stp_id A string value to be used as the identifier for this processing in the reporting of the current state of the data. By default, this is the `to` column.
+#' @param save_artifact A boolean tag to denote whether this processing should be saved as an artifact.  Only false if you just wanted to use this function to do the count() type check with benefit of console output control.
+#' @param report A boolean tag to denote whether this processing should be included in the reporting of the current state of the data.  May be false in scenarios where you didn't want to routinely look at the output for processing, but did want to be alerted when there were updates of values.
+#' @param perform_compare A boolean tag to denote whether this processing should be compared against the previous data artifact. to be used in the comparison of the current data against previous data artifacts.  This should be true when you want to "enforce" a given relationship
+#' @param project_dictionary The project_dictionary object, which by default is output by the `get_project_dictionary()` function.
+#' @param project_directory The project_directory object, which by default is output by the `here::here()` function.
+#' @param summary A boolean tag to denote whether this processing is a summary of the data rather than a mapping of values.  Primarily only true when this function is called from `eval_summary()`.
 #'
 #' @return
 #'
 #' @export
 #'
+#' @examples
+#' \donttest{
+#'   # mapping with issue
+#'   eval_map(
+#'     data_df = test_tbl,
+#'     from = "TRT_RAW",
+#'     to = "trt",
+#'     notes = "Note multiple raw processed values associated with each treatment type"
+#'   )
+#'
+#'   test_tbl$age <- as.numeric(test_tbl$AGE_RAW)
+#'   test_tbl$age[test_tbl$AGE_RAW == "twenty"] <- 20
+#'
+#'   # 'continuous' field with issue
+#'   eval_map(
+#'     data_df = test_tbl,
+#'     from = "AGE_RAW",
+#'     to = "age",
+#'     std_proc_na = as.numeric,
+#'     notes = "Note processing of value of 'twenty' from AGE_RAW"
+#'   )
+#'
+#' }
 
 eval_map <- function(data_df = NULL,
                      from = NULL,
@@ -27,7 +57,7 @@ eval_map <- function(data_df = NULL,
                      issue = FALSE, # TODO: if you say issue = 1... start with just the mapping itself... but there should be a way to deal with to highlight the update artifact for issue tracking...
                      notes = NULL,
                      stp_id = NULL,
-                     save_artifact = TRUE, # only false if you just wanted to use this function to do the count() type check with benefit of console output control
+                     save_artifact = TRUE,
                      report = TRUE,
                      perform_compare = TRUE, # case where you just want to highlight something, but didn't want to "enforce" any particular relationship
                      project_dictionary = get_project_dictionary(),
