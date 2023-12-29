@@ -20,6 +20,9 @@
 # RStudio files
 .Rproj.user/
 
+# Secure data files
+secure_data/
+
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
