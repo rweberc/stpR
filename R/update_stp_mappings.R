@@ -1,7 +1,21 @@
+#' Utility function to update the stp_ob "mapping" items artifacts with a new case.
 #'
-#' @return
+#' Used primarily internally by the stpR package.
 #'
-#' @export
+#' @param df_name String name of the data frame that was being filtered.
+#' @param ref_ob Reference object that was used to filter the data frame.
+#' @param update_ob Update object that was used to filter the data frame.
+#' @param from string value of the column(s) in the data frame that represent the columns being processed in the current data set
+#' @param to string value of the column(s) in the data frame that represent the columns being processed in the current data set.
+#' @param std_proc_na A function that will be applied to the `from` column(s) to determine which values should be considered "standard processing" NA values.  This field is used in cases when processing values such as numbers, where it's not necessary to know all the "typically" processed values, but it is helpful to know the values that aren't readily processed by this standard processing as well as how they are handled in the current data set.
+#' @param highlight Boolean to indicate if the case should be highlighted. Defaults to FALSE.
+#' @param issue Boolean to indicate if the case should be flagged as an issue. Defaults to FALSE.
+#' @param notes String notes associated with the case.
+#' @param report Boolean to indicate if the case should be flagged for reporting. Defaults to TRUE.
+#' @param perform_compare Boolean to indicate if the case should be flagged for comparison. Defaults to TRUE.
+#' @param project_dictionary The project_dictionary object.
+#' @param project_directory The project_directory object.
+#'
 #'
 update_stp_mappings <- function(df_name,
                                 ref_ob,

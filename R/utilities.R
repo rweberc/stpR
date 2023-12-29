@@ -1,10 +1,12 @@
+#' Internal utility to output data frame and messages to the console based on several conditions.
+#'
+#'
+#' @param df The data frame to be output to the console.
+#' @param header_text The text to be printed before the data frame.
+#' @param cases_text The text to be printed before the data frame when there are cases to report.
+#' @param no_cases_text The text to be printed when there are no cases to report.
+#' @param see_returned_object_text The text to be printed when there are more than 9 rows in the data frame.
 
-#'
-#' @return
-#'
-#'
-
-# Function to output dataframe to the console similar to using message() for test.  Do not use print() because it doesn't work well with tibbles.
 output_data_to_console <- function(df,
                                    header_text = NULL,
                                    cases_text = NULL,

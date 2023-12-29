@@ -1,8 +1,22 @@
+#' Return cases relevant for reporting
 #'
-#' @return
+#' Based on the current state of the stpR object.  Currently, only returns those values that are flagged for reporting (i.e., report = TRUE).
+#' In the future, this function will also allow returning "non-report" items that have updates associated with them as compared with the previous data set.
+#'
+#' @param stp_ob stpR artifact object
+#' @param limit_to_highlight boolean to limit returned values to those that are highlighted
+#' @param limit_to_issue boolean to limit returned values to those that are flagged as issues
+#'
+#' @return a dataframe of the cases that are flagged for reporting
 #'
 #' @export
 #'
+#' @examples
+#' \donttest{
+#'
+#'   get_reporting_cases(stp_object)
+#'
+#' }
 get_reporting_cases = function(stp_ob,
                                limit_to_highlight = FALSE,
                                limit_to_issue = FALSE) {

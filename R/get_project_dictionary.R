@@ -1,19 +1,29 @@
-#' First attempts to read the project_dictionary file from the current parent environment;
-#' failing that will attempt to read the file from a path, with the default path being at the root level of a project for a file specifically named stp_project_dictionary
+#' Read stpR project_dictionary from environment.
 #'
+#' By default, attempts to read the project_dictionary file from the current parent environment.
 #'
-#' @return
+#' @param filename The name of the project_dictionary file to read.  Default and standard is "project_dictionary.yaml".
+#' @param dir The directory where the project_dictionary file is located.  Default is the current working directory.
+#'
+#' @return project_dictionary A list object that contains the project_dictionary.
 #'
 #' @export
 #'
-get_project_dictionary <- function(filename = "project_dictionary.yaml", dir = here::here()) {
+#' @examples
+#' \donttest{
+#'
+#'   get_project_dictionary()
+#'
+#' }
+get_project_dictionary <- function(filename = "project_dictionary.yaml",
+                                   dir = here::here()) {
 
-  # TODO: Add warning that it's needed and suggestion, if not available, use x() to create it
+  # TODO: Add check for existence of project_dictionary.yaml file in the current environment
+  # TODO: Create function to create a dictionary object, if not already available.
+  # TODO: Add in validation for dictionary object
 
   # Attempt to read the dictionary from the path
   project_dictionary = yaml::read_yaml(file.path(dir, filename))
-
-  # TODO: add in validation for dictionary object
 
   return(project_dictionary)
 

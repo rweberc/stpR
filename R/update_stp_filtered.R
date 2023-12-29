@@ -1,8 +1,25 @@
+#' Utility function to update the stp_ob "filtered" items artifacts with a new case.
 #'
-#' @return
+#' Used primarily internally by the stpR package.
 #'
-#' @export
 #'
+#' @param df_name String name of the data frame that was being filtered.
+#' @param ref_ob Reference object that was used to filter the data frame.
+#' @param update_ob Update object that was used to filter the data frame.
+#' @param stp_id_var String identifier for the case.
+#' @param id_vars String vector of the id variables used to filter the data frame.
+#' @param group_by_vars String vector of the group by variables used to filter the data frame.
+#' @param keep_logic String logic used to filter the data frame.
+#' @param highlight Boolean to indicate if the case should be highlighted. Defaults to FALSE.
+#' @param issue Boolean to indicate if the case should be flagged as an issue. Defaults to FALSE.
+#' @param notes String notes associated with the case.
+#' @param report Boolean to indicate if the case should be flagged for reporting. Defaults to TRUE.
+#' @param perform_compare Boolean to indicate if the case should be flagged for comparison. Defaults to TRUE.
+#' @param project_dictionary The project_dictionary object.
+#' @param project_directory The project_directory object.
+#'
+#'
+
 update_stp_filtered <- function(df_name,
                                 ref_ob,
                                 update_ob,
@@ -13,7 +30,7 @@ update_stp_filtered <- function(df_name,
                                 highlight,
                                 issue,
                                 notes,
-                                report = report,
+                                report,
                                 perform_compare,
                                 project_dictionary,
                                 project_directory) {
@@ -32,10 +49,8 @@ update_stp_filtered <- function(df_name,
 
     if (project_dictionary$allow_updates_to_existing_individual_artifacts == FALSE) { # TODO: again, consider get() function
 
-      warning("Rows exist for ... but allow_updates_to_existing_individual_artifacts is set to FALSE.",
+      stop("Rows exist for this stp_id but allow_updates_to_existing_individual_artifacts is set to FALSE.",
               call. = FALSE)
-
-      return() # TODO: likely need to update return statement
 
     } else {
 

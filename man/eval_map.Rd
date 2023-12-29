@@ -51,12 +51,15 @@ eval_map(
 
 \item{summary}{A boolean tag to denote whether this processing is a summary of the data rather than a mapping of values.  Primarily only true when this function is called from \code{eval_summary()}.}
 }
+\value{
+a data frame with the current mapping and any updates to the mapping, if relevant.
+}
 \description{
 \itemize{
 \item Initial processing of raw data for both categorical and "continuous" fields (depending on whether std_proc_na is NULL)
 \item General summary of value combinations for several columns: As a utility, \code{eval_summary()} also utilizes the functionality of this utility, as well: When \code{summary = TRUE}, the \code{data_df} is assumed to be a summary table rather than a processing of \code{from} and \code{to} values as is commonly the case for the use of eval_map().
 \item Comparison of current data against previous data artifacts
-\item Additional creation of tages of items to note as "issues" or "highlights" for reporting of the current state of the data
+\item Additional creation of tags of items to note as "issues" or "highlights" for reporting of the current state of the data
 }
 }
 \examples{

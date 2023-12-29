@@ -2,15 +2,28 @@
 % Please edit documentation in R/get_project_dictionary.R
 \name{get_project_dictionary}
 \alias{get_project_dictionary}
-\title{First attempts to read the project_dictionary file from the current parent environment;
-failing that will attempt to read the file from a path, with the default path being at the root level of a project for a file specifically named stp_project_dictionary}
+\title{Read stpR project_dictionary from environment.}
 \usage{
 get_project_dictionary(
   filename = "project_dictionary.yaml",
   dir = here::here()
 )
 }
+\arguments{
+\item{filename}{The name of the project_dictionary file to read.  Default and standard is "project_dictionary.yaml".}
+
+\item{dir}{The directory where the project_dictionary file is located.  Default is the current working directory.}
+}
+\value{
+project_dictionary A list object that contains the project_dictionary.
+}
 \description{
-First attempts to read the project_dictionary file from the current parent environment;
-failing that will attempt to read the file from a path, with the default path being at the root level of a project for a file specifically named stp_project_dictionary
+By default, attempts to read the project_dictionary file from the current parent environment.
+}
+\examples{
+\donttest{
+
+  get_project_dictionary()
+
+}
 }

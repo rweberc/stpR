@@ -1,11 +1,28 @@
+#' Returns stpR object.
 #'
-#' @return
+#' Utility to quickly pull stpR object from file.  Utilized by many of the strR functions for this purpose.
+#'
+#' desc
+#'
+#' details
+#'
+#' @param file_type The type of stpR object to return, either "current" or "compare".  Default is "current".
+#' @param dir The directory to save the stp_ob object to, which by default is determined by the `here::here()` function.
+#' @param project_dictionary The project_dictionary object, which by default is determined by the `get_project_dictionary()` function.
+#'
+#' @return stp_ob A list object that documents the current state of the project for evaluation and reporting.
 #'
 #' @export
 #'
-get_stp_object <- function(project_dictionary = get_project_dictionary(),
+#' @examples
+#' \donttest{
+#'
+#' get_stp_object()
+#'
+#' }
+get_stp_object <- function(file_type = "current",
                            dir = here::here(),
-                           file_type = "current") {
+                           project_dictionary = get_project_dictionary()) {
 
 
   if (file_type == "current")
@@ -24,8 +41,6 @@ get_stp_object <- function(project_dictionary = get_project_dictionary(),
     if (usethis::ui_yeah("Save empty stp_ob at this path?" %>% glue::glue())) # TODO: add in warning that this makes a lot less sense for "compare" file types...
       stp_object = create_stp_ob(save_to_path = path_to_read)
   }
-
-  # TODO: add in validation for compare object
 
   return(stp_object)
 

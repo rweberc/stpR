@@ -2,7 +2,7 @@
 % Please edit documentation in R/eval_summary.R
 \name{eval_summary}
 \alias{eval_summary}
-\title{Description}
+\title{For use with stpR setup cases where a pre-defined mapping of values is of interest to be tracked, but where variables are strictly associated in a \code{from} and \code{to} relationship.  Most likely to be utilized}
 \usage{
 eval_summary(
   summary_df = NULL,
@@ -19,12 +19,42 @@ eval_summary(
 )
 }
 \arguments{
-\item{save_artifact}{create an artifact to be saved out (almost always true... only false if you just wanted to use this function to do the count() type check with benefit of console output control)}
+\item{summary_df}{The data frame, pre-summarized, to be associated with this documentation item.}
 
-\item{perform_compare}{case where you just want to highlight something, but didn't want to "enforce" any particular relationship}
+\item{key}{String value of the column name to be used as the key for the summary_df.  Will be utilized similarlly to the \code{from} column in the \code{eval_map()} function.  In some scenarios, deciding on the key variable will be arbitrary, but choosing it here to support additional comparison functionality associated with these artifact items.}
 
-\item{stp_ob}{}
+\item{highlight}{A boolean tag to denote whether this processing is of interest for highlighting in the reporting of the current state of the data.  Generally, this would be a type of mapping or field processing that would be of interest to routinely review for each data set processing.}
+
+\item{issue}{A boolean tag to denote whether this processing is of interest for noting for inspection as an issue in the reporting of the current state of the data.}
+
+\item{notes}{A string value to be included in the reporting of the current state of the data.}
+
+\item{stp_id}{A string value to be used as the identifier for this processing in the reporting of the current state of the data. By default, this is the \code{to} column.}
+
+\item{save_artifact}{A boolean tag to denote whether this processing should be saved as an artifact.  Only false if you just wanted to use this function to do the count() type check with benefit of console output control.}
+
+\item{report}{A boolean tag to denote whether this processing should be included in the reporting of the current state of the data.  May be false in scenarios where you didn't want to routinely look at the output for processing, but did want to be alerted when there were updates of values.}
+
+\item{perform_compare}{A boolean tag to denote whether this processing should be compared against the previous data artifact. to be used in the comparison of the current data against previous data artifacts.  This should be true when you want to "enforce" a given relationship}
+
+\item{project_dictionary}{The project_dictionary object, which by default is output by the \code{get_project_dictionary()} function.}
+
+\item{project_directory}{The project_directory object, which by default is output by the \code{here::here()} function.}
+}
+\value{
+a data frame with the current mapping and any updates to the mapping, if relevant.
 }
 \description{
-Description
+This function calls \code{eval_map()} with the \code{summary} parameter set to TRUE.  See \code{eval_map()} for additional details.
+}
+\examples{
+\donttest{
+  eval_summary(
+    summary_df = count(test_tbl, approach, asa),
+    key = "proc_name",
+    notes = "summary proc, ASA notes",
+    stp_id = "comp_approach_asa"
+  )
+
+}
 }

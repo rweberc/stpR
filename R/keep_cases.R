@@ -1,8 +1,40 @@
-
+#' Utility to filter cases from a data set that do not meet a specified condition.
 #'
-#' @return
+#' This utility also creates an artifact of removed cases for reporting and comparison against separate data set processing.
+#'
+#' @param data_df A data set to be evaluated and possibly filtered.
+#' @param stp_id A unique identifier for this filter instance.
+#' @param id_vars A string or vector of strings representing fields within the data set to use as identifiers.
+#' @param non_id_vars A string or vector of strings representing fields within the data set to use as non-identifiers.
+#' @param group_by_vars A string or vector of strings representing fields within the data set to group by.
+#' @param keep_logic A string representing the logic to be used to filter the data set. Default is to keep cases where the logic evaluates to TRUE.
+#' @param highlight A logical value indicating whether or not to highlight the filtered cases. Default is FALSE.
+#' @param issue A logical value indicating whether or not to flag the filtered cases as an issue. Default is FALSE.
+#' @param notes A string representing notes to be associated with the update artifact.
+#' @param save_artifact A logical value indicating whether or not to save the update artifact. Default is TRUE.
+#' @param report A logical value indicating whether or not to include the update artifact in the report. Default is TRUE.
+#' @param perform_compare A logical value indicating whether or not to perform a comparison of the update artifact to the compare artifact. Default is TRUE.
+#' @param return_only_filtered A logical value indicating whether or not to return only the filtered cases or the data set with these cases removed.  Default is FALSE
+#' @param project_dictionary The project_dictionary object, which by default is output by the `get_project_dictionary()` function.
+#' @param project_directory The project_directory object, which by default is output by the `here::here()` function.
+#'
+#' @return data frame. Depending on the return_only_filtered argument, either the data set with the filtered cases (default), or the filtered data itself.
 #'
 #' @export
+#'
+#' @examples
+#' \donttest{
+#'
+#' qa_tbl <- keep_cases(
+#'   data_df = qa_tbl,
+#'   stp_id = "age_filter",
+#'   id_vars = "col_id",
+#'   non_id_vars = "age",
+#'   keep_logic = "age >= 18",
+#'   notes = "Remove patients younger than 18 years old"
+#' )
+#'
+#' }
 #'
 keep_cases <- function(data_df = NULL,
                        stp_id = NULL, # TODO: is it a concern if id's in different stp_ob entities are the same

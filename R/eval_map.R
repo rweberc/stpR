@@ -4,7 +4,7 @@
 #'  - Initial processing of raw data for both categorical and "continuous" fields (depending on whether std_proc_na is NULL)
 #'  - General summary of value combinations for several columns: As a utility, `eval_summary()` also utilizes the functionality of this utility, as well: When `summary = TRUE`, the `data_df` is assumed to be a summary table rather than a processing of `from` and `to` values as is commonly the case for the use of eval_map().
 #'  - Comparison of current data against previous data artifacts
-#'  - Additional creation of tages of items to note as "issues" or "highlights" for reporting of the current state of the data
+#'  - Additional creation of tags of items to note as "issues" or "highlights" for reporting of the current state of the data
 #'
 #' @param data_df The data frame to be evaluated.
 #' @param from string value of the column(s) in the data frame that represent the columns being processed in the current data set
@@ -21,7 +21,7 @@
 #' @param project_directory The project_directory object, which by default is output by the `here::here()` function.
 #' @param summary A boolean tag to denote whether this processing is a summary of the data rather than a mapping of values.  Primarily only true when this function is called from `eval_summary()`.
 #'
-#' @return
+#' @return a data frame with the current mapping and any updates to the mapping, if relevant.
 #'
 #' @export
 #'
@@ -257,104 +257,4 @@ eval_map <- function(data_df = NULL,
 }
 
 
-# example type cases to unit test
-# # only get two rows of change... I think as expected
-# old_map <- tribble(
-#   ~ id, ~ col1, ~ col2,
-#   "a", 1, 0,
-#   "b", 2, 1,
-#   "c", 3, 3
-# )
-#
-# new_map <- tribble(
-#   ~ id, ~ col1, ~ col2,
-#   "a", 1, 0,
-#   "b", 2, 11,
-#   "b", 2, 12,
-#   "c", 3, 3
-# )
-#
-# # Will get four rows of change for b... one for the change from the perspective of each of the "to" columns
-# old_map <- tribble(
-#   ~ id, ~ col1, ~ col2,
-#   "a", 1, 0,
-#   "b", 1, 11,
-#   "b", 2, 12,
-#   "c", 3, 3
-# )
-#
-# new_map <- tribble(
-#   ~ id, ~ col1, ~ col2,
-#   "a", 1, 0,
-#   "b", 1, 12,
-#   "b", 2, 11,
-#   "c", 3, 3
-# )
-#
-# # ~ four rows again...
-# old_map <- tribble(
-#   ~ id, ~ col1, ~ col2,
-#   "a", 1, 0,
-#   "b", 9, 20,
-#   "b", 10, 21,
-#   "c", 3, 3
-# )
-#
-# new_map <- tribble(
-#   ~ id, ~ col1, ~ col2,
-#   "a", 1, 0,
-#   "b", 7, 11,
-#   "b", 8, 12,
-#   "c", 3, 3
-# )
-#
-# # what about when one of these to values is an NA
-# old_map <- tribble(
-#   ~ id, ~ col1, ~ col2,
-#   "a", 1, 0,
-#   "b", 9, 20,
-#   "b", 10, 21,
-#   "c", 3, 3
-# )
-#
-# new_map <- tribble(
-#   ~ id, ~ col1, ~ col2,
-#   "a", 1, 0,
-#   "b", 7, 11,
-#   "b", 8, NA,
-#   "c", 3, 3
-# )
-## Looking at case with multiple values but only one 'to' column
-# old_map <- tribble(
-#   ~ id, ~ col1,
-#   "a", 1,
-#   "b", 9,
-#   "b", 10,
-#   "c", 3
-# )
-#
-# new_map <- tribble(
-#   ~ id, ~ col1,
-#   "a", 1,
-#   "b", 100,
-#   "b", 200,
-#   "c", 3
-# )
-#
-# from <-  "id"
-# to <- c("col1", "col2")
-
-
-# TODO: have init_stp() that would suggest and create the needed metadata objects...
-
-
-# Cases to check... when you have an NA in the from column:
-# tibble(id = c(NA, 1, 2), col1 = c(0, 1, NA)) %>% anti_join(tibble(id = 1:3, col1 = c(0, 1, NA)), by = "id")
-
-# Similarly, when you have NA in the to columns (either in old or new)
-# tibble(id = c(NA, 1, 2), col1 = c(0, 1, NA)) %>% anti_join(tibble(id = 1:3, col1 = c(0, 1, NA)), by = "id")
-
-
-
-# Cases when you have a single value mapped in multiple ways (either in new or old)
 
