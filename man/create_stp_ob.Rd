@@ -29,7 +29,7 @@ Usually run at the beginning of processing a new data set.
 \examples{
 \donttest{
 
-create_stp_ob(reset = TRUE)
+//create_stp_ob(reset = TRUE)
 
 }
 

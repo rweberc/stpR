@@ -96,7 +96,7 @@ reporting_object <- get_reporting_cases(stp_object,
 
     # TODO: need to add in value checks for null items
     item_header <- reporting_object_row %>%
-      pull(stp_id)
+      dplyr::pull(stp_id)
 
     item_description <- reporting_object_row %>%
       dplyr::pull(notes)

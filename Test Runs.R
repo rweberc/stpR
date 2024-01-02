@@ -32,7 +32,7 @@ eval_map(
 )
 
 eval_summary(
-  summary_df = count(test_tbl, approach, asa),
+  summary_df = dplyr::count(test_tbl, approach, asa),
   key = "proc_name",
   notes = "summary proc, ASA notes",
   stp_id = "comp_approach_asa"

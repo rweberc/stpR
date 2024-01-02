@@ -14,7 +14,7 @@
 #' @examples
 #' \donttest{
 #'
-#' create_stp_ob(reset = TRUE)
+#' //create_stp_ob(reset = TRUE)
 #'
 #' }
 #'

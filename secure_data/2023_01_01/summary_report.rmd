@@ -14,3 +14,107 @@ reporting_object <- get_reporting_cases(stp_object,
                                         limit_to_highlight = FALSE,
                                         limit_to_issue = FALSE)
 ```
+
+## trt
+
+Note multiple raw processed values associated with each treatment type
+
+```{r, echo = FALSE}
+ref_ob <- reporting_object %>%
+slice(1) %>%
+.[["ref_ob"]] %>%
+.[[1]]
+
+if (!is.null(ref_ob)) {
+  if (nrow(ref_ob) <= 10) {
+
+    ref_ob %>%
+      DT::datatable(rownames = FALSE,
+                    options = list(dom = "t"))
+
+  } else {
+
+    ref_ob %>%
+      DT::datatable(rownames = FALSE)
+
+  }
+}
+```
+
+## age
+
+Note processing of value of 'twenty' from AGE_RAW
+
+```{r, echo = FALSE}
+ref_ob <- reporting_object %>%
+slice(2) %>%
+.[["ref_ob"]] %>%
+.[[1]]
+
+if (!is.null(ref_ob)) {
+  if (nrow(ref_ob) <= 10) {
+
+    ref_ob %>%
+      DT::datatable(rownames = FALSE,
+                    options = list(dom = "t"))
+
+  } else {
+
+    ref_ob %>%
+      DT::datatable(rownames = FALSE)
+
+  }
+}
+```
+
+## comp_approach_asa
+
+summary proc, ASA notes
+
+```{r, echo = FALSE}
+ref_ob <- reporting_object %>%
+slice(3) %>%
+.[["ref_ob"]] %>%
+.[[1]]
+
+if (!is.null(ref_ob)) {
+  if (nrow(ref_ob) <= 10) {
+
+    ref_ob %>%
+      DT::datatable(rownames = FALSE,
+                    options = list(dom = "t"))
+
+  } else {
+
+    ref_ob %>%
+      DT::datatable(rownames = FALSE)
+
+  }
+}
+```
+
+## age_filter
+
+Remove patients younger than 18 years old
+
+```{r, echo = FALSE}
+ref_ob <- reporting_object %>%
+slice(4) %>%
+.[["ref_ob"]] %>%
+.[[1]]
+
+if (!is.null(ref_ob)) {
+  if (nrow(ref_ob) <= 10) {
+
+    ref_ob %>%
+      DT::datatable(rownames = FALSE,
+                    options = list(dom = "t"))
+
+  } else {
+
+    ref_ob %>%
+      DT::datatable(rownames = FALSE)
+
+  }
+}
+```
