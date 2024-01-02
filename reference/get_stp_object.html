@@ -81,11 +81,14 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">get_stp_object</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mapping_items</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 0 × 15</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15 variables: stp_id &lt;chr&gt;, df_name &lt;chr&gt;, from &lt;chr&gt;, to &lt;chr&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   std_proc_na &lt;list&gt;, notes &lt;chr&gt;, highlight &lt;lgl&gt;, issue &lt;lgl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   report &lt;lgl&gt;, perform_compare &lt;lgl&gt;, compare_path &lt;chr&gt;, ref_ob &lt;list&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   update_ob &lt;list&gt;, has_update_ob &lt;lgl&gt;, timestamp &lt;dttm&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 15</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   stp_id            df_name from  to    std_proc_na notes highlight issue report</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> trt               qa_tbl  TRT_… trt   <span style="color: #949494;">&lt;NULL&gt;</span>      Note… FALSE     FALSE TRUE  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> age               qa_tbl  AGE_… age   <span style="color: #949494;">&lt;fn&gt;</span>        Note… FALSE     FALSE TRUE  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> comp_approach_asa <span style="color: #BB0000;">NA</span>      proc… <span style="color: #BB0000;">NA</span>    <span style="color: #949494;">&lt;NULL&gt;</span>      summ… FALSE     FALSE TRUE  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: perform_compare &lt;lgl&gt;, compare_path &lt;chr&gt;, ref_ob &lt;list&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   update_ob &lt;list&gt;, has_update_ob &lt;dbl&gt;, timestamp &lt;dttm&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $filter_items</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 0 × 15</span></span>
@@ -95,9 +98,12 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   update_ob &lt;list&gt;, has_update_ob &lt;lgl&gt;, timestamp &lt;dttm&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $text_items</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 0 × 6</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 variables: type &lt;chr&gt;, stp_id &lt;chr&gt;, item &lt;chr&gt;, add_item &lt;list&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   priority &lt;chr&gt;, timestamp &lt;dttm&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   type  stp_id              item           add_item priority timestamp          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> ALERT assert_trt_vs_stage <span style="color: #949494;">"</span>qa_tbl %&gt;% d… <span style="color: #949494;">&lt;NULL&gt;</span>   1        2024-01-02 <span style="color: #949494;">22:28:11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> ALERT assert_trt_vs_stage <span style="color: #949494;">"</span>    nrow() =… <span style="color: #949494;">&lt;NULL&gt;</span>   1        2024-01-02 <span style="color: #949494;">22:28:11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> ALERT 99999               <span style="color: #949494;">"</span>Assert disti… <span style="color: #949494;">&lt;int&gt;</span>    1        2024-01-02 <span style="color: #949494;">22:28:12</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>

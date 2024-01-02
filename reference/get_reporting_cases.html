@@ -78,10 +78,13 @@ In the future, this function will also allow returning "non-report" items that h
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu">get_reporting_cases</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 0 × 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 10 variables: stp_id &lt;chr&gt;, notes &lt;chr&gt;, highlight &lt;lgl&gt;, issue &lt;lgl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   report &lt;lgl&gt;, ref_ob &lt;list&gt;, update_ob &lt;list&gt;, has_update_ob &lt;lgl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   reference_object_row &lt;lgl&gt;, filter_object_row &lt;lgl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   stp_id         notes highlight issue report ref_ob     update_ob has_update_ob</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> trt            Note… FALSE     FALSE TRUE   <span style="color: #949494;">&lt;gropd_df&gt;</span> <span style="color: #949494;">&lt;NULL&gt;</span>                0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> age            Note… FALSE     FALSE TRUE   <span style="color: #949494;">&lt;gropd_df&gt;</span> <span style="color: #949494;">&lt;NULL&gt;</span>                0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> comp_approach… summ… FALSE     FALSE TRUE   <span style="color: #949494;">&lt;tibble&gt;</span>   <span style="color: #949494;">&lt;NULL&gt;</span>                0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: reference_object_row &lt;lgl&gt;, filter_object_row &lt;lgl&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>

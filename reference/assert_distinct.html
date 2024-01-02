@@ -90,7 +90,16 @@ If <code>throw_assert_errors</code> is <code>FALSE</code> and <code>console_outp
 <span class="r-in"><span>  data_df <span class="op">=</span> <span class="va">temp_dup_tbl</span>,</span></span>
 <span class="r-in"><span>  group_by_vars <span class="op">=</span> <span class="st">"col_id"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘lubridate’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Cases failing distinct:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 21</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   col_id event_date   age stage   los   ebl   asa trt    approach    visit_codes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     68 2017-12-18    46 T2      103     0     2 Drug B laparoscopy 34342      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 11 more variables: EVENT_DATE_RAW &lt;chr&gt;, AGE_RAW &lt;chr&gt;, STAGE_RAW &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   LOS_RAW &lt;chr&gt;, EBL_RAW &lt;chr&gt;, ASA_RAW &lt;chr&gt;, TRT_RAW &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   APPROACH_RAW &lt;chr&gt;, VISIT_CODES_RAW &lt;chr&gt;, visit_type &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   errorType &lt;chr&gt;</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Assert distinct failed.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>

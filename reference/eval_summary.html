@@ -118,12 +118,20 @@
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span>  <span class="fu">eval_summary</span><span class="op">(</span></span></span>
-<span class="r-in"><span>    summary_df <span class="op">=</span> <span class="fu">count</span><span class="op">(</span><span class="va">qa_tbl</span>, <span class="va">approach</span>, <span class="va">asa</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    summary_df <span class="op">=</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">qa_tbl</span>, <span class="va">approach</span>, <span class="va">asa</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    key <span class="op">=</span> <span class="st">"proc_name"</span>,</span></span>
 <span class="r-in"><span>    notes <span class="op">=</span> <span class="st">"summary proc, ASA notes"</span>,</span></span>
 <span class="r-in"><span>    stp_id <span class="op">=</span> <span class="st">"comp_approach_asa"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in count(qa_tbl, approach, asa):</span> could not find function "count"</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Current Mapping:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   approach      asa     n</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> laparoscopy     1    62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> laparoscopy     2    55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> laparoscopy     3    56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> open            4    58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> open            5    69</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
