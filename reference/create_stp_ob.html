@@ -45,7 +45,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_stp_ob</span><span class="op">(</span></span>
 <span>  save_to_path <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  reset <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu">here</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  dir <span class="op">=</span> <span class="fu">here</span><span class="fu">::</span><span class="fu"><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  project_dictionary <span class="op">=</span> <span class="fu"><a href="get_project_dictionary.html">get_project_dictionary</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -61,7 +61,7 @@
 
 
 <dt>dir</dt>
-<dd><p>The directory to save the stp_ob object to, which by default is determined by the <code>here::here()</code> function.</p></dd>
+<dd><p>The directory to save the stp_ob object to, which by default is determined by the <code><a href="https://here.r-lib.org//reference/here.html" class="external-link">here::here()</a></code> function.</p></dd>
 
 
 <dt>project_dictionary</dt>
@@ -80,7 +80,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">create_stp_ob</span><span class="op">(</span>reset <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘here’</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘usethis’</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
