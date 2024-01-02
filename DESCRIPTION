@@ -24,6 +24,7 @@ Imports:
     magrittr,
     rmarkdown,
     stringr,
+    usethis,
     xfun,
     yaml
 URL: https://rweberc.github.io/stpR/reference/index.html
